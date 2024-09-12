@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Survey{% endblock %}
+
+{% block body %}
+    <h1>{{ survey.title }}</h1>
+
+    <a href="{{ path('admin_survey_index') }}">back to list</a>
+    <a href="{{ path('admin_survey_edit', {'id': survey.id}) }}">edit</a>
+    {{ include('admin/survey/_delete_form.html.twig') }}
+
+    <div>
+        <h3>Questions</h3>
+        <a href="{{ path('admin_question_new', {id: survey.id}) }}">Create new</a>
+        <ul>
+            {% for question in survey.questions %}
+                <li>
+                    {{ include('admin/question/_delete_form.html.twig') }}
+                    <a href="{{ path('admin_question_edit', {question_id: question.id, survey_id: survey.id}) }}">edit</a>
+                    <p>Label : {{ question.label }}</p>
+                    <p>Type : {{ question.type }}</p>
+                    <p>Nom : {{ question.name }}</p>
+                    <p>Condition : {{ question.required ? 'Obligatoire' : 'Non' }}</p>
+
+                    <h4>Options</h4>
+                    {% for option in question.options %}
+                        <div>
+                            <input type="radio" id="{{ option.id }}">
+                            <label for="{{ option.id }}">{{ option.label }}</label>
+                        </div>
+                    {% endfor %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

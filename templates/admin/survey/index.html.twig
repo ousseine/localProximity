@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Survey index{% endblock %}
+
+{% block body %}
+    <h1>Survey index</h1>
+
+    <a href="{{ path('admin_survey_new') }}">Create new</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Questions</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for survey in surveys %}
+            <tr>
+                <td>{{ survey.id }}</td>
+                <td>{{ survey.title }}</td>
+                <td>
+                    <a href="{{ path('admin_survey_show', {'id': survey.id}) }}">show</a>
+                    <a href="{{ path('admin_survey_edit', {'id': survey.id}) }}">edit</a>
+                    {{ include('admin/survey/_delete_form.html.twig') }}
+                </td>
+                <td>{{ survey.questions|length }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

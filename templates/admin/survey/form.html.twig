@@ -1,0 +1,14 @@
+{% set root = app.request.get('_route') %}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ root == 'admin_survey_new' ? "Ajouter une question" : "Modifier la question : " ~ survey }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ root == 'admin_survey_new' ? "Ajouter une question" : "Modifier la question : " ~ survey }}</h1>
+
+    <a href="{{ path('admin_survey_index') }}">back to list</a>
+
+    {{ form(form) }}
+
+{% endblock %}

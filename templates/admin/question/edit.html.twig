@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Question{% endblock %}
+
+{% block body %}
+    <h1>Edit Question</h1>
+
+    <a href="{{ path('admin_survey_show', {id: survey.id}) }}">back to list</a>
+
+    {{ include('admin/question/_form.html.twig', {'button_label': 'Update'}) }}
+
+{% endblock %}

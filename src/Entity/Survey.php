@@ -15,8 +15,8 @@ class Survey
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'integer')]
-    private ?string $title = null;
+    #[ORM\Column(type: 'string')]
+    private string $title = '';
 
     /**
      * @var Collection<int, Question>
@@ -34,6 +34,11 @@ class Survey
     {
         $this->questions = new ArrayCollection();
         $this->answers = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->title;
     }
 
     public function getId(): ?int
