@@ -1,0 +1,14 @@
+{% set root = app.request.get('_route') %}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ root == 'admin_option_new' ? "Ajouter une option" : "Modifier l'option : " ~ option }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ root == 'admin_option_new' ? "Ajouter une option" : "Modifier l'option : " ~ option }}</h1>
+
+    <a href="{{ path('admin_option_index') }}">back to list</a>
+
+    {{ form(form) }}
+
+{% endblock %}
