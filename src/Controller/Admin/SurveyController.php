@@ -57,7 +57,15 @@ final class SurveyController extends AbstractController
     public function delete(Request $request, Survey $survey, EntityManagerInterface $em): Response
     {
         if ($this->isCsrfTokenValid('delete'.$survey->getId(), $request->getPayload()->getString('_token'))) {
+
+            // On n'efface pas les réponses, mais plutôt l'id des questions
+            foreach ($survey->getAnswers() as $answer) {
+                $answer->setSurvey(null);
+                $em->persist($survey);
+            }
+
             $em->remove($survey);
+
             $em->flush();
         }
 

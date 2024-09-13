@@ -27,8 +27,14 @@ class Survey
     /**
      * @var Collection<int, Answer>
      */
-    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'survey', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'survey', cascade: ['persist'], orphanRemoval: false)]
     private Collection $answers;
+
+    #[ORM\Column(type: 'string')]
+    private ?string $slug = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private string $description = '';
 
     public function __construct()
     {
@@ -114,6 +120,30 @@ class Survey
                 $answer->setSurvey(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }

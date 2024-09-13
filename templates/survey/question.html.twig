@@ -1,0 +1,21 @@
+<div class="survey-container transition-main">
+    <div class="progress-bar">
+        <div class="progress" style="width: {{ ((page) / total) * 100 }}%;"></div>
+    </div>
+
+    <h2>{{ survey.title }}</h2>
+
+    <p>Question {{ page }} sur {{total}}</p>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        <div>
+            {% for question in survey.questions %}
+                {% if not question.required %}
+                    <a href="{{ path('survey_question', {'page': page}) }}" class="skip-button">Passer</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {{ form_end(form) }}
+</div>

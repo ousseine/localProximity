@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="progress-bar">
+        <div class="progress" style="width: {{ ((page) / total) * 100 }}%;"></div>
+    </div>
+
+    <p>Question {{ page }} sur {{total}}</p>
+
+    {{ form_start(form) }}
+        <address-map></address-map>
+    {{ form_end(form) }}
+{% endblock %}

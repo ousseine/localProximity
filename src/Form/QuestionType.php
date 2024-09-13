@@ -39,6 +39,7 @@ class QuestionType extends AbstractType
                 'class' => Option::class,
                 'choice_label' => 'label',
                 'multiple' => true,
+                'required' => false,
             ])
         ;
     }
