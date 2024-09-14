@@ -11,8 +11,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/admin/question')]
+#[Route('/localProximity/question')]
+#[IsGranted("ROLE_ADMIN")]
 final class QuestionController extends AbstractController
 {
     #[Route('/{id}/new', name: 'admin_question_new', methods: ['GET', 'POST'])]
