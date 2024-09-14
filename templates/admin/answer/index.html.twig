@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AnswerController!{% endblock %}
+
+{% block body %}
+<div class="example-wrapper">
+    <h1>Answer Index ✅ {{ total }}</h1>
+
+    {% for polls in data %}
+
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                {% for survey in surveys %}
+                    {% for question in survey.questions %}
+                        <th>{{ question.name }}</th>
+                    {% endfor %}
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    {% for answer in polls %}
+                        <td>{{ answer.response }}</td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+
+    {% endfor %}
+</div>
+{% endblock %}

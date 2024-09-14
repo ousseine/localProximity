@@ -89,8 +89,8 @@ export default class Map extends HTMLElement {
 
         const getLatLng = (lat, lng) => {
             // On récupère les inputs
-            const inputLat = document.querySelector('input[class="latitude"]')
-            const inputLng = document.querySelector('input[class="longitude"]')
+            const inputLat = document.querySelector('input[class="lat"]')
+            const inputLng = document.querySelector('input[class="lon"]')
 
             // On ajoute les valeurs dans les inputs
             inputLat.value = lat

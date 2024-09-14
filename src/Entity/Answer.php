@@ -22,6 +22,9 @@ class Answer
     #[ORM\ManyToOne(inversedBy: 'answers')]
     private ?Survey $survey = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $sessionId = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class Answer
     public function setSurvey(?Survey $survey): static
     {
         $this->survey = $survey;
+
+        return $this;
+    }
+
+    public function getSessionId(): ?string
+    {
+        return $this->sessionId;
+    }
+
+    public function setSessionId(?string $sessionId): static
+    {
+        $this->sessionId = $sessionId;
 
         return $this;
     }

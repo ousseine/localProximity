@@ -2,12 +2,24 @@
 
 {% block body %}
     <div class="progress-bar">
-        <div class="progress" style="width: {{ ((page) / total) * 100 }}%;"></div>
+        <div class="progress" style="width: {{ ((page) / pages) * 100 }}%;"></div>
     </div>
-
-    <p>Question {{ page }} sur {{total}}</p>
+    <p>Question {{ page }} sur {{pages}}</p>
+    <h2>{{ survey.title }}</h2>
 
     {{ form_start(form) }}
+    {% if page > 0 and page <= 1 %}
         <address-map></address-map>
+    {% else %}
+        {{ form_widget(form) }}
+    {% endif %}
+
+    <div>
+        {% for question in survey.questions %}
+            {% if not question.required %}
+                <a href="{{ path('survey_question', {'page': page}) }}" class="skip-button">Passer</a>
+            {% endif %}
+        {% endfor %}
+    </div>
     {{ form_end(form) }}
 {% endblock %}
