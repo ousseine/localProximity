@@ -5,7 +5,7 @@ export default class Map extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
             <div class="flex items-center justify-center mt-5">
-                <div id="map" class="w-full h-80 sm:h-96" style="height: 300px;"></div>
+                <div id="map" class="w-full h-80 sm:h-96"></div>
             </div>`
 
         // Ajout du map

@@ -39,6 +39,8 @@ class SurveyController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // TODO:: vérifier si on a bien cliquer sur la carte
+
             return $this->answer($page, $survey, $form, $request->getSession());
         }
 

@@ -17,8 +17,12 @@ class OptionType extends AbstractType
             ->add('label', TextType::class, [
                 'empty_data' => '',
             ])
-            ->add('save', SubmitType::class)
-            ->add('saveAndAdd', SubmitType::class)
+            ->add('save', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-primary']
+            ])
+            ->add('saveAndAdd', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-primary']
+            ])
         ;
     }
 

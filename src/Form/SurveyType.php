@@ -39,8 +39,12 @@ class SurveyType extends AbstractType
                     'data-form-collection-delete-label-value' => 'Supprimer',
                 ]
             ])
-            ->add('save', SubmitType::class)
-            ->add('saveAndAdd', SubmitType::class)
+            ->add('save', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-primary']
+            ])
+            ->add('saveAndAdd', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-primary']
+            ])
             ->addEventListener(FormEvents::SUBMIT, $this->autoSlug(...))
         ;
     }

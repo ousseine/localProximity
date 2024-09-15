@@ -15,7 +15,7 @@ class Question
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'string', nullable: true)]
     private string $label = '';
 
     #[ORM\Column(type: 'string')]

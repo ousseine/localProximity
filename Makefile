@@ -3,6 +3,7 @@
 start:
 	docker compose up -d
 	symfony serve -d
+	php bin/console tailwind:build --watch
 
 stop:
 	docker compose stop

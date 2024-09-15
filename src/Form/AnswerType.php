@@ -26,7 +26,7 @@ class AnswerType extends AbstractType
             switch ($question->getType()) {
                 case 'hidden':
                     $builder->add($response, HiddenType::class, [
-                        'label' => $question->getLabel(),
+                        'label' => $question->getLabel() ? $question->getlabel() : '',
                         'required' => $question->isRequired(),
                         'attr' => ['class' => $question->getName()],
                         'mapped' => false,
@@ -34,19 +34,27 @@ class AnswerType extends AbstractType
                     break;
                 case 'text':
                     $builder->add($response, TextType::class, [
-                        'label' => $question->getLabel(),
+                        'label' => $question->getLabel() ? $question->getlabel() : '',
                         'required' => $question->isRequired(),
+                        'attr' => ['class' => $question->getName()],
+                        'mapped' => false
                     ]);
                     break;
                 case 'textarea':
                     $builder->add($response, TextareaType::class, [
-                        'label' => $question->getLabel(),
+                        'label' => $question->getLabel() ? $question->getlabel() : '',
                         'required' => $question->isRequired(),
+                        'attr' => [
+                            'class' => $question->getName(),
+                            'rows' => 5
+                        ],
+                        'mapped' => false
                     ]);
                     break;
                 case 'unique_choice':
                     $builder->add($response, ChoiceType::class, [
-                        'label' => $question->getLabel(),
+                        'label' => $question->getLabel() ? $question->getlabel() : '',
+                        'attr' => ['class' => $question->getName(), 'name' => $question->getName()],
                         'required' => $question->isRequired(),
                         'choices' => $this->formatChoices($question),
                         'expanded' => true,
@@ -56,18 +64,21 @@ class AnswerType extends AbstractType
                     break;
                 case 'multiple_choice':
                     $builder->add($response, ChoiceType::class, [
-                        'label' => $question->getLabel(),
+                        'label' => $question->getLabel() ? $question->getlabel() : '',
+                        'attr' => ['class' => $question->getName()],
                         'required' => $question->isRequired(),
                         'choices' => $this->formatChoices($question),
                         'expanded' => true,
                         'multiple' => true,
+                        'mapped' => false
                     ]);
                     break;
             }
         }
 
         $builder->add('save', SubmitType::class, [
-            'label' => 'Je continue'
+            'label' => 'Je continue',
+            'attr' => ['class' => 'btn btn-primary']
         ]);
     }
 

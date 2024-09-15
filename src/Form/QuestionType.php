@@ -20,6 +20,7 @@ class QuestionType extends AbstractType
         $builder
             ->add('label', TextType::class, [
                 'empty_data' => '',
+                'required' => false
             ])
             ->add('type', ChoiceType::class, [
                 'empty_data' => '',
@@ -34,7 +35,11 @@ class QuestionType extends AbstractType
             ->add('name', TextType::class, [
                 'empty_data' => '',
             ])
-            ->add('required', CheckboxType::class)
+            ->add('required', CheckboxType::class, [
+                'label' => 'Champ obligatoire',
+                'mapped' => false,
+                'required' => false
+            ])
             ->add('options', EntityType::class, [
                 'class' => Option::class,
                 'choice_label' => 'label',

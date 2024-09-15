@@ -52,6 +52,7 @@ final class QuestionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //$question->setLabel($form->get('label')->getData());
             $em->flush();
 
             return $this->redirectToRoute('admin_survey_show', ['id' => $survey->getId()], Response::HTTP_SEE_OTHER);

@@ -1,0 +1,28 @@
+{# TODO :: Ajouter les options dynamiquement #}
+
+<div>
+    <h3>{{ survey.title }} :</h3>
+
+    <div class="mt-4 w-full shadow-none sm:shadow-md shadow-border">
+        <div class="hidden w-full sm:flex items-center py-5 bg-muted">
+            <div class="w-[375px] bg-secondary"></div>
+            <div class="flex-1 grid grid-cols-1 sm:grid-cols-5">
+                <p class="text-xs text-center font-semibold leading-none text-secondary-foreground">Jamais</p>
+                <p class="text-xs text-center font-semibold leading-none text-secondary-foreground">Parfois</p>
+                <p class="text-xs text-center font-semibold leading-none text-secondary-foreground">Souvent</p>
+                <p class="text-xs text-center font-semibold leading-none text-secondary-foreground">Plus souvent</p>
+                <p class="text-xs text-center font-semibold leading-none text-secondary-foreground">Je ne sais pas</p>
+            </div>
+        </div>
+        {% for question in survey.questions %}
+        <div class="w-full space-y-6 sm:space-y-0 sm:divide-y divide-border">
+            <div class="py-5 w-full block sm:flex sm:items-center bg-card text-card-foreground list-item">
+                <div class="px-3 w-full sm:w-[375px]">
+                    <p class="text-sm">{{ form_label(form['response-' ~ question.id]) }}</p>
+                </div>
+                {{ form_widget(form['response-' ~ question.id]) }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
