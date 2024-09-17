@@ -1,0 +1,37 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}{{ root == 'admin_question_new' ? "Ajouter une quesiton" : "Modifier la question" }}{% endblock %}
+
+{% block admin %}
+
+    <section class="relative flex flex-col min-w-0 break-words bg-card w-full mb-6 m:shadow-lg rounded">
+        <div class="rounded-t mb-0 p-6 border-b border-border">
+            <div class="flex flex-wrap items-center">
+                <div class="relative w-full max-w-full flex-grow flex-1">
+                    <h2>{{ root == 'admin_question_new' ? "Ajouter une quesiton" : "Modifier la question" }}</h2>
+                </div>
+                <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                    <a href="{{ path('admin_survey_show', {id: survey.id}) }}" class="text-muted-foreground font-medium text-xs uppercase hover:text-muted-foreground/80">Retour</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-6 block w-full overflow-x-auto">
+            {{ form_start(form) }}
+            <div class="w-full grid grid-cols-1 gap-4 md:grid-cols-6">
+                <div class="md:col-span-4">{{ form_row(form.label) }}</div>
+                <div class="md:col-span-2">{{ form_row(form.name) }}</div>
+            </div>
+            {{ form_row(form.type) }}
+            {{ form_row(form.required) }}
+            {{ form_row(form.options) }}
+
+            <button class="btn btn-primary">
+                {{ root == 'admin_question_new' ? 'Enregistrer' : 'Sauvegarder' }}
+                {{ button_label|default('Enregistrer') }}
+            </button>
+            {{ form_end(form) }}
+        </div>
+    </section>
+
+{% endblock %}

@@ -1,34 +1,31 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
-{% block title %}Hello AnswerController!{% endblock %}
+{% block title 'Réponses | Admin' %}
 
-{% block body %}
-<div class="example-wrapper">
-    <h1>Answer Index ✅ {{ total }}</h1>
+{% block admin %}
 
-    {% for polls in data %}
+    <section class="relative flex flex-col min-w-0 break-words bg-card w-full mb-6 md:shadow-lg rounded">
+        <div class="rounded-t mb-0 p-6 border-b border-border">
+            <div class="flex flex-wrap items-center">
+                <div class="relative w-full max-w-full flex-grow flex-1">
+                    <h2>Réponses Index</h2>
+                </div>
+                <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                    <a href="{{ path('admin_answer_csv') }}" class="btn btn-sm btn-primary uppercase">Télécharger</a>
+                </div>
+            </div>
+        </div>
 
-        <table>
-            <thead>
-            <tr>
-                <th>ID</th>
-                {% for survey in surveys %}
-                    {% for question in survey.questions %}
-                        <th>{{ question.name }}</th>
-                    {% endfor %}
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ loop.index }}</td>
+        <div class="block w-full overflow-x-auto">
+            {% for polls in data %}
+                <ul class="w-full flex items-center gap-x-8 border border-border relative override-x-auto">
+                    <li class="p-4 text-base text-foreground font-bold">{{ loop.index }}</li>
                     {% for answer in polls %}
-                        <td>{{ answer.response }}</td>
+                        <li class="p-4 text-base text-foreground">{{ answer.response }}</li>
                     {% endfor %}
-                </tr>
-            </tbody>
-        </table>
+                </ul>
+            {% endfor %}
+        </div>
+    </section>
 
-    {% endfor %}
-</div>
 {% endblock %}

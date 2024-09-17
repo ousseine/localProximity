@@ -40,7 +40,7 @@ export default class extends Controller {
     deleteCollectionElement = (item) => {
         // Bouton ajouter
         const btn = document.createElement('button')
-        btn.setAttribute('class', 'btn btn-sm btn-destructive')
+        btn.setAttribute('class', 'btn-sm btn-destructive')
         btn.setAttribute('type', 'button')
         btn.innerHTML = this.deleteLabelValue || 'Supprimer un element'
 

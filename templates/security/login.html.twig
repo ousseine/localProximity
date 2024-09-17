@@ -3,45 +3,62 @@
 {% block title 'Connexion | Mobilité & Proximité' %}
 
 {% block body %}
-    <form action="{{ path('login') }}" method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
 
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %}
-
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-
-        <div>
-            <div>
-                <label for="username">Email</label>
-                <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-            </div>
-
-            <div>
-                <label for="password">Password</label>
-                <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-            </div>
-
-            <div class="checkbox mb-3">
-                <input type="checkbox" name="_remember_me" id="_remember_me">
-                <label for="_remember_me">Remember me</label>
-            </div>
-
-            <input type="hidden" name="_csrf_token"
-                   value="{{ csrf_token('authenticate') }}"
-            >
-            <input type="hidden" name="_target_path"
-                   value="{{ path('admin_survey_index') }}"
-            >
-
-            <button class="btn btn-lg btn-primary" type="submit">
-                Sign in
-            </button>
+    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+        <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+            <h1 class="text-center">Mobilité & Proximité</h1>
         </div>
-    </form>
+
+        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <div>
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="mb-3">
+                        You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <form class="space-y-6" action="{{ path('login') }}" method="post">
+                <div>
+                    <label for="username" class="text-foreground">Email address</label>
+                    <div class="mt-1">
+                        <input type="email" value="{{ last_username }}" name="_username" id="username" autocomplete="email" required autofocus>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between">
+                        <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+{#                        <div class="text-sm">#}
+{#                            <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>#}
+{#                        </div>#}
+                    </div>
+                    <div class="mt-1">
+                        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+                    </div>
+                </div>
+
+                <div class="checkbox mb-3 flex items-center">
+                    <input type="checkbox" name="_remember_me" id="_remember_me">
+                    <label for="_remember_me">Se souvenir de moi</label>
+                </div>
+
+                <input type="hidden" name="_csrf_token"
+                       value="{{ csrf_token('authenticate') }}"
+                >
+                <input type="hidden" name="_target_path"
+                       value="{{ path('admin_survey_index') }}"
+                >
+
+                <div>
+                    <button type="submit" class="btn btn-primary">Se connecter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 {% endblock %}

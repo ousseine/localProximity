@@ -1,14 +1,31 @@
-{% set root = app.request.get('_route') %}
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}{{ root == 'admin_option_new' ? "Ajouter une option" : "Modifier l'option : " ~ option }}{% endblock %}
 
-{% block body %}
+{% block admin %}
 
-    <h1>{{ root == 'admin_option_new' ? "Ajouter une option" : "Modifier l'option : " ~ option }}</h1>
+    <section class="relative flex flex-col min-w-0 break-words bg-card w-full mb-6 m:shadow-lg rounded">
+        <div class="rounded-t mb-0 p-6 border-b border-border">
+            <div class="flex flex-wrap items-center">
+                <div class="relative w-full max-w-full flex-grow flex-1">
+                    <h2>{{ root == 'admin_option_new' ? "Ajouter une option" : "Modifier l'option : " ~ option }}</h2>
+                </div>
+                <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                    <a href="{{ path('admin_option_index') }}" class="text-muted-foreground font-medium text-xs uppercase hover:text-muted-foreground/80">Retour</a>
+                </div>
+            </div>
+        </div>
 
-    <a href="{{ path('admin_option_index') }}">back to list</a>
+        <div class="p-6 block w-full overflow-x-auto">
+            {{ form_start(form) }}
+            {{ form_row(form.label) }}
 
-    {{ form(form) }}
+            <div class="flex items-center gap-x-2">
+                {{ form_row(form.save) }}
+                {{ form_row(form.saveAndAdd) }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </section>
 
 {% endblock %}

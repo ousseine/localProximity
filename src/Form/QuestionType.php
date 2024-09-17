@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Count;
 
 class QuestionType extends AbstractType
 {
@@ -19,8 +20,12 @@ class QuestionType extends AbstractType
     {
         $builder
             ->add('label', TextType::class, [
+                'label' => 'Nom de la question',
                 'empty_data' => '',
                 'required' => false
+            ])
+            ->add('name', TextType::class, [
+                'empty_data' => '',
             ])
             ->add('type', ChoiceType::class, [
                 'empty_data' => '',
@@ -30,22 +35,14 @@ class QuestionType extends AbstractType
                     'textarea' => 'textarea',
                     'Choix multiple' => 'multiple_choice',
                     'Choix unique' => 'unique_choice',
-                ]
-            ])
-            ->add('name', TextType::class, [
-                'empty_data' => '',
+                ],
+                'autocomplete' => true,
             ])
             ->add('required', CheckboxType::class, [
                 'label' => 'Champ obligatoire',
-                'mapped' => false,
                 'required' => false
             ])
-            ->add('options', EntityType::class, [
-                'class' => Option::class,
-                'choice_label' => 'label',
-                'multiple' => true,
-                'required' => false,
-            ])
+            ->add('options', OptionAutocompleteField::class)
         ;
     }
 

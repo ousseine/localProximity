@@ -43,7 +43,7 @@ class SurveyType extends AbstractType
                 'attr' => ['class' => 'btn btn-primary']
             ])
             ->add('saveAndAdd', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-primary']
+                'attr' => ['class' => 'btn btn-outline-primary']
             ])
             ->addEventListener(FormEvents::SUBMIT, $this->autoSlug(...))
         ;

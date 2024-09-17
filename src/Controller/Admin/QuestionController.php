@@ -33,7 +33,7 @@ final class QuestionController extends AbstractController
             return $this->redirectToRoute('admin_survey_show', ['id' => $survey->getId()], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('admin/question/new.html.twig', [
+        return $this->render('admin/question/form.html.twig', [
             'question' => $question,
             'survey' => $survey,
             'form' => $form,
@@ -58,7 +58,7 @@ final class QuestionController extends AbstractController
             return $this->redirectToRoute('admin_survey_show', ['id' => $survey->getId()], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('admin/question/edit.html.twig', [
+        return $this->render('admin/question/form.html.twig', [
             'question' => $question,
             'survey' => $survey,
             'form' => $form,

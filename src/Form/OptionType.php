@@ -18,10 +18,12 @@ class OptionType extends AbstractType
                 'empty_data' => '',
             ])
             ->add('save', SubmitType::class, [
+                'label' => 'Sauvegarder',
                 'attr' => ['class' => 'btn btn-primary']
             ])
             ->add('saveAndAdd', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-primary']
+                'label' => 'Sauvegarder et ajouter',
+                'attr' => ['class' => 'btn btn-outline-primary']
             ])
         ;
     }

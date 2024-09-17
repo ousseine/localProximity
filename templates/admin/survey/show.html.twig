@@ -1,36 +1,75 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
-{% block title %}Survey{% endblock %}
+{% block title %}{{ survey.title }}{% endblock %}
 
-{% block body %}
-    <h1>{{ survey.title }}</h1>
+{% block admin %}
 
-    <a href="{{ path('admin_survey_index') }}">back to list</a>
-    <a href="{{ path('admin_survey_edit', {'id': survey.id}) }}">edit</a>
-    {{ include('admin/survey/_delete_form.html.twig') }}
+    <section class="relative flex flex-col min-w-0 break-words bg-card w-full mb-6 md:shadow-lg rounded">
+        <div class="rounded-t mb-0 p-6 border-b border-border">
+            <div class="flex flex-wrap items-center justify-between">
+                <div class="relative w-full max-w-full flex-grow flex-1">
+                    <h2>{{ survey.title }}</h2>
+                </div>
+                <div class="relative px-4 text-right flex items-center gap-x-2">
+                    <a href="{{ path('admin_survey_index') }}" class="text-muted-foreground font-medium text-xs uppercase hover:text-muted-foreground/80">Retour</a>
+                    {{ include('admin/survey/_delete_form.html.twig') }}
+                </div>
+            </div>
+        </div>
 
-    <div>
-        <h3>Questions</h3>
-        <a href="{{ path('admin_question_new', {id: survey.id}) }}">Create new</a>
-        <ul>
-            {% for question in survey.questions %}
-                <li>
-                    {{ include('admin/question/_delete_form.html.twig') }}
-                    <a href="{{ path('admin_question_edit', {question_id: question.id, survey_id: survey.id}) }}">edit</a>
-                    <p>Label : {{ question.label }}</p>
-                    <p>Type : {{ question.type }}</p>
-                    <p>Nom : {{ question.name }}</p>
-                    <p>Condition : {{ question.required ? 'Obligatoire' : 'Non' }}</p>
+        <div class="p-6 block w-full overflow-x-auto">
+            <div class="flex flex-wrap items-center justify-between mb-8">
+                <h3>Questions</h3>
+                <a href="{{ path('admin_question_new', {id: survey.id}) }}" class="btn btn-sm btn-primary">Ajouter</a>
+            </div>
 
-                    <h4>Options</h4>
-                    {% for option in question.options %}
-                        <div>
-                            <input type="radio" id="{{ option.id }}">
-                            <label for="{{ option.id }}">{{ option.label }}</label>
+            <div class="space-y-6 rounded">
+                {% for question in survey.questions %}
+                    <div class="p-6 w-full border border-ring">
+                        <div class="flex items-center gap-x-2 justify-end">
+                            <a href="{{ path('admin_question_edit', {question_id: question.id, survey_id: survey.id}) }}" class="text-primary font-medium text-xs uppercase hover:text-primary/80 transition-colors duration-300">Modifier</a>
+                            {{ include('admin/question/_delete_form.html.twig') }}
                         </div>
-                    {% endfor %}
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
+
+                        <div class="block w-full mt-3">
+                            <table class="bg-background w-full border-collapse">
+                                <tr class="border border-border">
+                                    <th class="w-full md:w-2/12 text-start p-3 text-base text-foreground">Label</th>
+                                    <td class="w-full md:w-10/12 text-start p-3 text-base text-foreground">{{ question.label }}</td>
+                                </tr>
+                                <tr class="border border-border">
+                                    <th class="w-full md:w-2/12 text-start p-3 text-base text-foreground">Name</th>
+                                    <td class="w-full md:w-10/12 text-start p-3 text-base text-foreground">{{ question.name }}</td>
+                                </tr>
+                                <tr class="border border-border">
+                                    <th class="w-full md:w-2/12 text-start p-3 text-base text-foreground">Type</th>
+                                    <td class="w-full md:w-10/12 text-start p-3 text-base text-foreground">{{ question.type }}</td>
+                                </tr>
+                                <tr class="border border-border">
+                                    <th class="w-full md:w-2/12 text-start p-3 text-base text-foreground">Requis</th>
+                                    <td class="w-full md:w-10/12 text-start p-3 text-base text-foreground">{{ question.required ? 'Oui' : 'Non' }}</td>
+                                </tr>
+                                <tr class="border border-border">
+                                    <th class="w-full md:w-2/12 text-start p-3 text-base text-foreground">Options</th>
+                                    <td class="w-full md:w-10/12 text-start p-3 text-base text-foreground">
+                                        <ul>
+                                            {% for option in question.options %}
+                                                <li>
+                                                    <input type="radio" id="{{ option.id }}">
+                                                    <label for="{{ option.id }}">{{ option.label }}</label>
+                                                </li>
+                                            {% else %}
+                                                <li>Aucune option</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
 {% endblock %}

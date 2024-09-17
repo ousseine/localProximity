@@ -51,11 +51,15 @@
     }
 
     .btn {
-        @apply inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2;
+        @apply inline-flex items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-sm h-10 px-4 py-2;
+    }
+
+    .btn-sm {
+        @apply text-xs h-8 px-3 py-1.5;
     }
 
     .btn-outline {
-        @apply btn border border-input bg-background;
+        @apply border border-input bg-background transition-colors duration-300;
     }
 
     p, li, span, strong, div {
@@ -66,16 +70,20 @@
         @apply text-3xl md:text-5xl text-primary-foreground font-extrabold leading-tight mb-6;
     }
 
+    h1, h2, h3 {
+        @apply text-foreground font-bold leading-9 tracking-tight;
+    }
+
     h1 {
-        @apply text-3xl md:text-4xl text-foreground font-bold leading-tight;
+        @apply text-2xl md:text-3xl;
     }
 
     h2 {
-        @apply text-2xl md:text-3xl text-foreground font-bold leading-tight;
+        @apply text-xl md:text-2xl;
     }
 
     h3 {
-        @apply text-xl md:text-2xl text-foreground font-bold leading-tight;
+        @apply text-lg md:text-xl;
     }
 }
 
@@ -94,11 +102,26 @@
 }
 
 .btn-outline-primary {
-    @apply hover:bg-primary hover:text-primary-foreground;
+    @apply btn-outline hover:bg-primary hover:text-primary-foreground;
 }
 
 .btn-outline-accent {
-    @apply hover:bg-accent hover:text-accent-foreground;
+    @apply btn-outline hover:bg-accent hover:text-accent-foreground;
+}
+
+/* Forms */
+[type="text"],
+[type='email'],
+[type='password'] {
+    @apply bg-background border-none rounded ring-1 ring-input text-sm font-medium leading-none text-foreground focus:outline-none focus:ring-primary placeholder:text-muted-foreground py-2 w-full px-3 mt-1;
+}
+
+label {
+    @apply text-base text-foreground font-medium;
+}
+
+[type='checkbox'] {
+    @apply relative size-5 aspect-square bg-background appearance-none checked:bg-primary border border-input rounded outline-none text-transparent focus:ring-2 focus:ring-ring focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-ring focus-visible:border-ring cursor-pointer transition-all duration-300 ease-in-out mt-0 mr-2;
 }
 
 
@@ -112,7 +135,7 @@ form[name='answer'] {
 }
 
 .row-list > label {
-    @apply text-base text-foreground font-medium;
+    @apply block;
 }
 
 [id^='answer_response-'] {
@@ -142,4 +165,20 @@ form[name='answer'] {
 form[name='answer'] textarea,
 form[name='answer'] input[type='text'] {
     @apply bg-background border-none ring-1 ring-input text-sm font-medium leading-none text-foreground focus:outline-none focus:ring-primary placeholder:text-muted-foreground p-3 w-full;
+}
+
+
+/* Admin */
+#admin label {
+    @apply !inline-block;
+}
+
+
+/* Survey Form */
+form[name='survey'] #survey_questions > .mb-6 {
+    @apply border border-ring p-6 mt-2 rounded;
+}
+
+form[name='survey'] #survey_questions > .mb-6 .inline-flex {
+    @apply !flex;
 }

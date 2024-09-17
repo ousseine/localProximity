@@ -1,33 +1,56 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}Option index{% endblock %}
 
-{% block body %}
-    <h1>Option index</h1>
+{% block admin %}
 
-    <a href="{{ path('admin_option_new') }}">Create new</a>
+    <section class="relative flex flex-col min-w-0 break-words bg-card w-full mb-6 md:shadow-lg rounded">
+        <div class="rounded-t mb-0 p-6 border-b border-border">
+            <div class="flex flex-wrap items-center">
+                <div class="relative w-full max-w-full flex-grow flex-1">
+                    <h2>Options Index</h2>
+                </div>
+                <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                    <a href="{{ path('admin_option_new') }}" class="btn btn-sm btn-primary uppercase">Nouveau</a>
+                </div>
+            </div>
+        </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Label</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for option in options %}
-            <tr>
-                <td>{{ option.label }}</td>
-                <td>
-                    <a href="{{ path('admin_option_edit', {'id': option.id}) }}">edit</a>
-                    {{ include('admin/option/_delete_form.html.twig') }}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="2">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <div class="block w-full overflow-x-auto">
+            <table class="items-center bg-transparent w-full border-collapse ">
+                <thead>
+                <tr class="bg-muted">
+                    <th class="px-8 bg-blueGray-50 align-middle py-3 text-base text-card-foreground uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        #
+                    </th>
+                    <th class="px-8 bg-blueGray-50 align-middle py-3 text-base text-card-foreground uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        Label
+                    </th>
+                    <th class="px-8 bg-blueGray-50 align-middle py-3 text-base text-card-foreground uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for option in options %}
+                    <tr>
+                        <th class="border-t-0 px-8 align-middle border-l-0 border-r-0 text-base text-card-foreground whitespace-nowrap p-4 text-left">
+                            {{ loop.index }}
+                        </th>
+                        <td class="border-t-0 px-8 align-middle border-l-0 border-r-0 text-base text-card-foreground whitespace-nowrap p-4 ">
+                            {{ option.label }}
+                        </td>
+                        <td class="border-t-0 px-8 align-center border-l-0 border-r-0 text-base text-card-foreground whitespace-nowrap p-4">
+                            <div class="flex justify-end items-center gap-x-2">
+                                <a href="{{ path('admin_option_edit', {'id': option.id}) }}" class="text-primary font-medium text-xs uppercase hover:text-primary/80">edit</a>
+                                {{ include('admin/option/_delete_form.html.twig') }}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </section>
+
 {% endblock %}
