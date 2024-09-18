@@ -67,7 +67,7 @@
     }
 
     .title {
-        @apply text-3xl md:text-5xl text-primary-foreground font-extrabold leading-tight mb-6;
+        @apply text-3xl md:text-5xl text-primary-foreground font-extrabold leading-9 tracking-tight mb-6;
     }
 
     h1, h2, h3 {

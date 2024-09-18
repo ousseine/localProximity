@@ -1,0 +1,16 @@
+<div class="rounded-t mb-0 p-6 border-b border-border">
+    <div class="flex flex-wrap items-center">
+        <div class="relative w-full max-w-full flex-grow flex-1">
+            <h2>{{ title }}</h2>
+        </div>
+
+        <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+            <a href="{{ root matches '/new/' ? link_new : link_return }}" class="btn btn-sm btn-primary uppercase">
+                {{ root matches '/new/' ? label_new : label_return }}
+            </a>
+            {% if root matches '/edit/' or '/show/' %}
+                {{ include('admin/' ~ folder ~ '/_form_delete.html.twig') }}
+            {% endif %}
+        </div>
+    </div>
+</div>

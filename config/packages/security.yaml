@@ -20,7 +20,7 @@ security:
                 login_path: login
                 check_path: login
                 enable_csrf: true
-                default_target_path: admin_survey_index
+                default_target_path: admin_answer_index
             logout:
                 path: logout
                 # where to redirect after logout

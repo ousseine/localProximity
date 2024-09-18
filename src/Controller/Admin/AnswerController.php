@@ -4,7 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Repository\AnswerRepository;
 use App\Repository\SurveyRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,16 +17,44 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted("ROLE_ADMIN")]
 class AnswerController extends AbstractController
 {
+    public function __construct(
+        private readonly AnswerRepository $answers,
+        private readonly EntityManagerInterface $em,
+    )
+    {}
+
     #[Route(name: 'index', methods: ['GET'])]
-    public function index(AnswerRepository $answers, SurveyRepository $surveys): Response
+    public function index(SurveyRepository $surveys): Response
     {
-        $data = $this->getData($answers);
+        $data = $this->getData($this->answers);
 
         return $this->render('admin/answer/index.html.twig', [
             'data' => $data,
             'total' => count($data),
             'surveys' => $surveys->findAll(),
         ]);
+    }
+
+    #[Route('/delete', name: 'delete', methods: ['GET', 'POST'])]
+    public function delete(Request $request): RedirectResponse
+    {
+        $data = $this->getData($this->answers);
+
+        // Récupérer chaque ligne
+        $ids = $request->getPayload()->get('_ids');
+
+        if (!empty($ids)) {
+            $dataId = explode(',', $ids);
+
+            foreach ($dataId as $id) {
+                foreach ($data[$id] as $row) {
+                    $this->em->remove($row);
+                    $this->em->flush();
+                }
+            }
+        }
+
+        return $this->redirectToRoute('admin_answer_index');
     }
 
     #[Route('/csv', name: 'csv', methods: ['GET', 'POST'])]
@@ -63,9 +94,11 @@ class AnswerController extends AbstractController
 
     private function getData(AnswerRepository $answers): array
     {
+        $index = 1;
         $data = [];
         foreach ($this->getSessionIds($answers->findAll()) as $sessionId) {
-            $data[] = $answers->findAllUsers($sessionId);
+            $data[$index] = $answers->findAllUsers($sessionId);
+            $index++;
         }
 
         return $data;
@@ -87,33 +120,33 @@ class AnswerController extends AbstractController
 
     private function getCsvHeader(): array
     {
+        // TODO :: Csv dynamique
         return [
             'Index',
             'Latitude',
             'Longitude',
             'Service de commerces',
             'Services de soins',
+            'Services de formation',
+            'Services de divertissement',
+            'Services de travail',
+            'Services d\'habiter',
             'Déplacement pour du commerce',
-            'Déplacement pour du soins'
+            'Déplacement pour du soins',
+            'Déplacement pour des formations',
+            'Déplacement pour du divertissement',
+            'Déplacement pour travailler',
+            'Déplacement pour habiter',
+            'Remarques ou précision',
+            'Civilité',
+            'Type de logement',
+            'Location',
+            'Composition du foyer',
+            'Nb voitures',
+            'Age',
+            'Status pro',
+            'En savoir plus',
+            'Commentaire',
         ];
-
-//        return [
-//            'Index',
-//            'Latitude',
-//            'Longitude',
-//            'Service de commerces',
-//            'Services de soins',
-//            'Services de formation',
-//            'Services de divertissement',
-//            'Services de travail',
-//            'Services d\'habiter',
-//            'Déplacement pour du commerce',
-//            'Déplacement pour du soins',
-//            'Déplacement pour des formations',
-//            'Déplacement pour du divertissement',
-//            'Déplacement pour travailler',
-//            'Déplacement pour habiter',
-//            'Remarques ou précision'
-//        ];
     }
 }

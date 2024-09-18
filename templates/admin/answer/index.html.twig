@@ -4,27 +4,43 @@
 
 {% block admin %}
 
-    <section class="relative flex flex-col min-w-0 break-words bg-card w-full mb-6 md:shadow-lg rounded">
+    <section class="relative flex flex-col min-w-0 break-words bg-card w-full mb-6 md:shadow-lg rounded overflow-x-hidden">
         <div class="rounded-t mb-0 p-6 border-b border-border">
             <div class="flex flex-wrap items-center">
                 <div class="relative w-full max-w-full flex-grow flex-1">
                     <h2>Réponses Index</h2>
                 </div>
-                <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                <div class="relative w-full flex-grow flex-1 flex items-center justify-end gap-x-2">
                     <a href="{{ path('admin_answer_csv') }}" class="btn btn-sm btn-primary uppercase">Télécharger</a>
+                    <form name="form_delete" action="{{ path('admin_answer_delete') }}" class="hidden" method="post">
+                        <input type="hidden" id="delete_group" name="_ids">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete_group') }}">
+                        <button type="submit" class="btn btn-sm btn-destructive">Supprimer</button>
+                    </form>
                 </div>
             </div>
         </div>
 
         <div class="block w-full overflow-x-auto">
-            {% for polls in data %}
-                <ul class="w-full flex items-center gap-x-8 border border-border relative override-x-auto">
-                    <li class="p-4 text-base text-foreground font-bold">{{ loop.index }}</li>
-                    {% for answer in polls %}
-                        <li class="p-4 text-base text-foreground">{{ answer.response }}</li>
-                    {% endfor %}
-                </ul>
-            {% endfor %}
+            <div class="table items-center bg-transparent w-full border-collapse">
+                {% for key, polls in data %}
+                    <ul class="flex items-center gap-6 hover:bg-muted hover:text-muted-foreground overflow-x-auto">
+                        <li class="px-6 py-4 text-base text-foreground font-bold">
+                            <label><input type="checkbox" name="checkbox_delete[]" value="{{ key }}"></label>
+                        </li>
+                        <li class="px-6 py-4 text-base text-foreground font-bold">{{ loop.index }}</li>
+                        {% for answer in polls %}
+                            <li class="block px-6 py-4">
+                                <p class="flex items-center flex-nowrap text-sm">{{ answer.response }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="p-6">
+                        <p class="text-lg font-bold text-foreground leading-9 tracking-tight">Aucune réponse enregistrée</p>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </section>
 

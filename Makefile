@@ -2,7 +2,7 @@
 
 deploy:
 	./bin/deploy
-	ssh -A fdm 'cd domains/ousseine.site/public_html/localProximity.site && php bin/console d:m:m -n && composer2 dump-env prod && composer2 update --ignore-platform-req=ext-http --no-dev --optimize-autoloader && touch vendor/autoload.php && php bin/console tailwind:build --minify && php bin/console importmap:install && php bin/console asset-map:compile && APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear'
+	ssh -A fdm 'cd domains/ousseine.site/public_html/localProximity.site && composer2 install --no-dev --optimize-autoloader && composer2 dump-env prod && touch vendor/autoload.php && php bin/console d:m:m -n && php bin/console tailwind:build --minify && php bin/console importmap:install && php bin/console asset-map:compile && APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear'
 
 start:
 	docker compose up -d
