@@ -39,9 +39,11 @@ class SurveyController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //$lat = $form->get('latitude')->getData();
+            //$lon = $request->request->get('lon');
             // TODO:: vérifier si on a bien cliquer sur la carte
 
-            return $this->answer($page, $survey, $form, $request->getSession());
+            return $this->answer($page, $survey, $form, $request->getSession(), $request);
         }
 
         return $this->render('survey/index.html.twig', [
@@ -55,26 +57,43 @@ class SurveyController extends AbstractController
     #[Route('/complete',name: 'survey_completed')]
     public function completed(Request $request): Response
     {
+        $answers = $request->getSession()->get('answers');
+
+        if ($answers === null) {
+            return $this->redirectToRoute('survey_index');
+        }
+
+        foreach ($answers as $row) {
+            /** @var Answer $answer */
+            $answer = $row;
+
+            $this->em->persist($answer);
+            $this->em->flush();
+        }
+
         // On supprime l'id de la session une fois le sondage terminé
         $request->getSession()->remove('session_id');
+        $request->getSession()->remove('answers');
 
         return $this->render('survey/completed.html.twig');
     }
 
     // Traitement du formulaire des réponses
-    private function answer($page, Survey $survey, $form, $session): RedirectResponse
+    private function answer($page, Survey $survey, $form, $session, $request): RedirectResponse
     {
+        $answers = $request->getSession()->get('answers', []);
+
         foreach ($survey->getQuestions()->toArray() as $question) {
             $answer = new Answer();
-            $answer->setSurvey($survey);
-            $answer->setQuestion($question);
             $answer->setResponse($form->get('response-'.$question->getId())->getData());
             $answer->setSessionId($this->autoSessionId($session));
 
             $this->em->persist($answer);
+
+            $answers[] = $answer;
         }
 
-        $this->em->flush();
+        $request->getSession()->set('answers', $answers);
 
         return $this->redirectToRoute('survey_question', [
             'page' => $page + 1,

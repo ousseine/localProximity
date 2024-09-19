@@ -27,7 +27,7 @@ class Survey
     /**
      * @var Collection<int, Answer>
      */
-    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'survey', cascade: ['persist'], orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'survey', cascade: ['persist'], orphanRemoval: true)]
     private Collection $answers;
 
     #[ORM\Column(type: 'string')]
