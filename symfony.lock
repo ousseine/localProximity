@@ -293,6 +293,9 @@
             "assets/icons/symfony.svg"
         ]
     },
+    "symfony/ux-swup": {
+        "version": "v2.19.3"
+    },
     "symfony/ux-turbo": {
         "version": "v2.19.3"
     },

@@ -6,7 +6,6 @@ use App\Repository\AnswerRepository;
 use App\Repository\SurveyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -20,8 +19,7 @@ class AnswerController extends AbstractController
     public function __construct(
         private readonly AnswerRepository $answers,
         private readonly EntityManagerInterface $em,
-    )
-    {}
+    ) {}
 
     #[Route(name: 'index', methods: ['GET'])]
     public function index(SurveyRepository $surveys): Response
@@ -36,7 +34,7 @@ class AnswerController extends AbstractController
     }
 
     #[Route('/delete', name: 'delete', methods: ['GET', 'POST'])]
-    public function delete(Request $request): RedirectResponse
+    public function delete(Request $request)
     {
         $data = $this->getData($this->answers);
 
@@ -49,9 +47,10 @@ class AnswerController extends AbstractController
             foreach ($dataId as $id) {
                 foreach ($data[$id] as $row) {
                     $this->em->remove($row);
-                    $this->em->flush();
                 }
             }
+
+            $this->em->flush();
         }
 
         return $this->redirectToRoute('admin_answer_index');

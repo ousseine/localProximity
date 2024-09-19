@@ -28,16 +28,22 @@ class AnswerType extends AbstractType
                     $builder->add($response, HiddenType::class, [
                         'label' => $question->getLabel() ? $question->getlabel() : '',
                         'required' => $question->isRequired(),
-                        'attr' => ['class' => $question->getName()],
                         'mapped' => false,
+                        'attr' => [
+                            'class' => $question->getName(),
+                            'data-swup-submit-target' => 'areaFields'
+                        ],
                     ]);
                     break;
                 case 'text':
                     $builder->add($response, TextType::class, [
                         'label' => $question->getLabel() ? $question->getlabel() : '',
                         'required' => $question->isRequired(),
-                        'attr' => ['class' => $question->getName()],
-                        'mapped' => false
+                        'mapped' => false,
+                        'attr' => [
+                            'class' => $question->getName(),
+                            'data-swup-submit-target' => 'areaFields'
+                        ],
                     ]);
                     break;
                 case 'textarea':
@@ -46,7 +52,8 @@ class AnswerType extends AbstractType
                         'required' => $question->isRequired(),
                         'attr' => [
                             'class' => $question->getName(),
-                            'rows' => 5
+                            'rows' => 5,
+                            'data-swup-submit-target' => 'areaFields'
                         ],
                         'mapped' => false
                     ]);
@@ -54,23 +61,30 @@ class AnswerType extends AbstractType
                 case 'unique_choice':
                     $builder->add($response, ChoiceType::class, [
                         'label' => $question->getLabel() ? $question->getlabel() : '',
-                        'attr' => ['class' => $question->getName(), 'name' => $question->getName()],
                         'required' => $question->isRequired(),
                         'choices' => $this->formatChoices($question),
                         'expanded' => true,
                         'multiple' => false,
-                        'mapped' => false
+                        'mapped' => false,
+                        'attr' => [
+                            'class' => $question->getName(),
+                            'name' => $question->getName(),
+                            'data-swup-submit-target' => 'options'
+                        ],
                     ]);
                     break;
                 case 'multiple_choice':
                     $builder->add($response, ChoiceType::class, [
                         'label' => $question->getLabel() ? $question->getlabel() : '',
-                        'attr' => ['class' => $question->getName()],
                         'required' => $question->isRequired(),
                         'choices' => $this->formatChoices($question),
                         'expanded' => true,
                         'multiple' => true,
-                        'mapped' => false
+                        'mapped' => false,
+                        'attr' => [
+                            'class' => $question->getName(),
+                            'data-swup-submit-target' => 'options'
+                        ],
                     ]);
                     break;
             }
