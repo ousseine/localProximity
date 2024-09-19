@@ -21,13 +21,13 @@ class Survey
     /**
      * @var Collection<int, Question>
      */
-    #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'survey', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'survey', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $questions;
 
     /**
      * @var Collection<int, Answer>
      */
-    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'survey', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'survey', cascade: ['persist'], orphanRemoval: false)]
     private Collection $answers;
 
     #[ORM\Column(type: 'string')]

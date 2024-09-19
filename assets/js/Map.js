@@ -1,5 +1,6 @@
 import L from 'leaflet'
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+const form = document.querySelector('form[name="answer"]')
 
 export default class Map extends HTMLElement {
     connectedCallback() {

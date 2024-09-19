@@ -39,10 +39,6 @@ class SurveyController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //$lat = $form->get('latitude')->getData();
-            //$lon = $request->request->get('lon');
-            // TODO:: vérifier si on a bien cliquer sur la carte
-
             return $this->answer($page, $survey, $form, $request->getSession(), $request);
         }
 
@@ -84,8 +80,15 @@ class SurveyController extends AbstractController
         $answers = $request->getSession()->get('answers', []);
 
         foreach ($survey->getQuestions()->toArray() as $question) {
+            $response = $form->get('response-'.$question->getId())->getData();
+
+            if (!$response) {
+                $this->addFlash('warning', "Veillez cliquer sur la carte");
+                return $this->redirectToRoute('survey_index');
+            }
+
             $answer = new Answer();
-            $answer->setResponse($form->get('response-'.$question->getId())->getData());
+            $answer->setResponse($response);
             $answer->setSessionId($this->autoSessionId($session));
 
             $this->em->persist($answer);

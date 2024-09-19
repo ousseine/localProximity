@@ -15,9 +15,9 @@
             </div>
         </div>
 
-        <div class="bg-background my-12 md:shadow-xl shadow-input w-full max-w-6xl mx-auto px-4 sm:px-8 py-12">
+        <div class="bg-background mt-8 mb-12 md:shadow-xl shadow-input w-full max-w-6xl mx-auto px-4 sm:px-8 py-12">
             {% for message in app.flashes('warning') %}
-                <div class="bg-secondary border border-border rounded-md px-4 py-3 mb-8 text-sm font-medium text-secondary-foreground">{{ message }}</div>
+                <div class="bg-destructive border border-border rounded-md px-4 py-3 mb-8 text-sm font-medium text-destructive-foreground">{{ message }}</div>
             {% endfor %}
 
             <div class="w-full bg-accent h-1.5 rounded-full">

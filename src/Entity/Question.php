@@ -30,13 +30,13 @@ class Question
     /**
      * @var Collection<int, Option>
      */
-    #[ORM\ManyToMany(targetEntity: Option::class, inversedBy: 'questions', cascade: ['persist'])]
+    #[ORM\ManyToMany(targetEntity: Option::class, inversedBy: 'questions', cascade: ['persist', 'remove'])]
     private Collection $options;
 
     /**
      * @var Collection<int, Answer>
      */
-    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'question', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'question', cascade: ['persist', 'remove'])]
     private Collection $answers;
 
     #[ORM\ManyToOne(inversedBy: 'questions')]
