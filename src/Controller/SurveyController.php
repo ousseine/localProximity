@@ -83,7 +83,7 @@ class SurveyController extends AbstractController
             $response = $form->get('response-'.$question->getId())->getData();
 
             if (!$response) {
-                $this->addFlash('warning', "Veillez cliquer sur la carte");
+                $this->addFlash('warning', "Veillez renseigner votre lieu de résidence sur la carte");
                 return $this->redirectToRoute('survey_index');
             }
 

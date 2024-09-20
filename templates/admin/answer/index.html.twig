@@ -10,7 +10,9 @@
                     <h2>Réponses Index</h2>
                 </div>
                 <div class="relative w-full flex-grow flex-1 flex items-center justify-end gap-x-2">
-                    <a href="{{ path('admin_answer_csv') }}" class="btn btn-sm btn-primary uppercase">Télécharger</a>
+                    <a href="{{ path('admin_answer_download') }}" class="btn btn-sm btn-primary uppercase" data-controller="redirect-index">
+                        Télécharger
+                    </a>
                     <form name="form_delete" action="{{ path('admin_answer_delete') }}" class="hidden" method="post">
                         <input type="hidden" id="delete_ids" name="_ids">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete_group') }}">

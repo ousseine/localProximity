@@ -6,6 +6,7 @@ use App\Repository\AnswerRepository;
 use App\Repository\SurveyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -19,22 +20,23 @@ class AnswerController extends AbstractController
     public function __construct(
         private readonly AnswerRepository $answers,
         private readonly EntityManagerInterface $em,
+        private readonly SurveyRepository $surveys,
     ) {}
 
     #[Route(name: 'index', methods: ['GET'])]
-    public function index(SurveyRepository $surveys): Response
+    public function index(): Response
     {
         $data = $this->getData($this->answers);
 
         return $this->render('admin/answer/index.html.twig', [
             'data' => $data,
             'total' => count($data),
-            'surveys' => $surveys->findAll(),
+            'surveys' => $this->surveys->findAll(),
         ]);
     }
 
-    #[Route('/delete', name: 'delete', methods: ['GET', 'POST'])]
-    public function delete(Request $request)
+    #[Route('/delete', name: 'delete', methods: ['POST'])]
+    public function delete(Request $request): RedirectResponse
     {
         $data = $this->getData($this->answers);
 
@@ -56,39 +58,14 @@ class AnswerController extends AbstractController
         return $this->redirectToRoute('admin_answer_index');
     }
 
-    #[Route('/csv', name: 'csv', methods: ['GET', 'POST'])]
-    public function csv(AnswerRepository $answers): StreamedResponse
+    #[Route('/download', name: 'download', methods: ['GET'])]
+    public function downloadCsv(): RedirectResponse|StreamedResponse
     {
-        $data = $this->getData($answers);
+        $data = $this->getData($this->answers);
 
-        $response = new StreamedResponse(function () use ($data) {
-            $handle = fopen('php://output', 'w');
+        if ($data) return $this->getCsv($data);
 
-            fputcsv($handle, $this->getCsvHeader());
-
-            $index = 1; // Démarrer l'index
-            foreach ($data as $rows) {
-                $csvRow = [$index];
-
-                foreach ($rows as $row) {
-                    $csvRow[] = $row->getResponse();
-                }
-
-                // Écrire la ligne formée dans le fichier CSV
-                fputcsv($handle, $csvRow);
-
-                // Incrémenter l'index pour la prochaine ligne
-                $index++;
-            }
-
-            fclose($handle);
-        });
-
-        $response->headers->set('Content-Type', 'text/csv charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment; filename="survey_data.csv"');
-        $response->setStatusCode(Response::HTTP_OK);
-
-        return $response;
+        return $this->redirectToRoute('admin_answer_index');
     }
 
     private function getData(AnswerRepository $answers): array
@@ -117,35 +94,48 @@ class AnswerController extends AbstractController
         return array_unique($sessionIds);
     }
 
+    private function getCsv(array $data): StreamedResponse
+    {
+        $response = new StreamedResponse(function () use ($data) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, $this->getCsvHeader());
+
+            $index = 1; // Démarrer l'index
+            foreach ($data as $rows) {
+                $csvRow = [$index];
+
+                foreach ($rows as $row) {
+                    $csvRow[] = $row->getResponse();
+                }
+
+                // Écrire la ligne formée dans le fichier CSV
+                fputcsv($handle, $csvRow);
+
+                // Incrémenter l'index pour la prochaine ligne
+                $index++;
+            }
+
+            fclose($handle);
+        });
+
+        $response->headers->set('Content-Type', 'text/csv charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename="data.csv"');
+        $response->setStatusCode(Response::HTTP_OK);
+
+        return $response;
+    }
+
     private function getCsvHeader(): array
     {
-        // TODO :: Csv dynamique
-        return [
-            'Index',
-            'Latitude',
-            'Longitude',
-            'Service de commerces',
-            'Services de soins',
-            'Services de formation',
-            'Services de divertissement',
-            'Services de travail',
-            'Services d\'habiter',
-            'Déplacement pour du commerce',
-            'Déplacement pour du soins',
-            'Déplacement pour des formations',
-            'Déplacement pour du divertissement',
-            'Déplacement pour travailler',
-            'Déplacement pour habiter',
-            'Remarques ou précision',
-            'Civilité',
-            'Type de logement',
-            'Location',
-            'Composition du foyer',
-            'Nb voitures',
-            'Age',
-            'Status pro',
-            'En savoir plus',
-            'Commentaire',
-        ];
+        $questionsHeader = ['Index'];
+
+        foreach ($this->surveys->findAll() as $answer) {
+            foreach ($answer->getQuestions() as $question) {
+                $questionsHeader[] = $question->getLabel();
+            }
+        }
+
+        return $questionsHeader;
     }
 }
