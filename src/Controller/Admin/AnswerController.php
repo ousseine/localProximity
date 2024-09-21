@@ -41,7 +41,7 @@ class AnswerController extends AbstractController
         $data = $this->getData($this->answers);
 
         // Récupérer chaque ligne
-        $ids = $request->getPayload()->get('_ids');
+        $ids = $request->getPayload()->get('_selected_rows');
 
         if (!empty($ids)) {
             $dataId = explode(',', $ids);
@@ -128,11 +128,11 @@ class AnswerController extends AbstractController
 
     private function getCsvHeader(): array
     {
-        $questionsHeader = ['Index'];
+        $questionsHeader = ['index'];
 
         foreach ($this->surveys->findAll() as $answer) {
             foreach ($answer->getQuestions() as $question) {
-                $questionsHeader[] = $question->getLabel();
+                $questionsHeader[] = $question->getName();
             }
         }
 

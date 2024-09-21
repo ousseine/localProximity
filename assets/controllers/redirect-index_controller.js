@@ -7,7 +7,7 @@ export default class extends Controller {
 
             setTimeout(function () {
                 window.location.href = "/localProximity/answer"
-            }, 200)
+            }, 300)
         })
     }
 }

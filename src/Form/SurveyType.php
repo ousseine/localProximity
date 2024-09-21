@@ -35,7 +35,7 @@ class SurveyType extends AbstractType
                 'by_reference' => false,
                 'attr' => [
                     'data-controller' => 'form-collection',
-                    'data-form-collection-add-label-value' => 'Ajouter un question',
+                    'data-form-collection-add-label-value' => 'Ajouter une question',
                     'data-form-collection-delete-label-value' => 'Supprimer',
                 ]
             ])
