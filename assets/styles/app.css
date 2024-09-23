@@ -88,6 +88,17 @@
 }
 
 
+/* Alerts */
+.bg-success { @apply bg-primary; }
+.text-success-foreground { @apply text-primary-foreground; }
+
+.bg-warning { @apply bg-secondary; }
+.text-warning-foreground { @apply text-secondary-foreground; }
+
+.bg-danger { @apply bg-destructive; }
+.text-danger-foreground { @apply text-destructive-foreground; }
+
+
 /* Buttons */
 .btn-primary {
     @apply bg-primary text-primary-foreground hover:bg-primary/90;

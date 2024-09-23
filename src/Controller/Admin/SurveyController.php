@@ -7,34 +7,40 @@ use App\Form\SurveyType;
 use App\Repository\SurveyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/localProximity/survey')]
+#[Route('/localProximity/survey', name: 'admin_survey_')]
 #[IsGranted("ROLE_ADMIN")]
 final class SurveyController extends AbstractController
 {
-    #[Route(name: 'admin_survey_index', methods: ['GET'])]
-    public function index(SurveyRepository $surveyRepository): Response
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly SurveyRepository $surveys
+    ) {}
+
+    #[Route(name: 'index', methods: ['GET'])]
+    public function index(): Response
     {
         return $this->render('admin/survey/index.html.twig', [
-            'surveys' => $surveyRepository->findAll(),
+            'surveys' => $this->surveys->findAll(),
         ]);
     }
 
-    #[Route('/new', name: 'admin_survey_new', methods: ['GET', 'POST'])]
-    #[Route('/{id}/edit', name: 'admin_survey_edit', methods: ['GET', 'POST'])]
-    public function form(?Survey $survey, Request $request, EntityManagerInterface $em): Response
+    #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
+    public function form(?Survey $survey, Request $request): Response
     {
         if (!$survey) $survey = new Survey();
         $form = $this->createForm(SurveyType::class, $survey);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$survey->getId()) $em->persist($survey);
-            $em->flush();
+            if (!$survey->getId()) $this->em->persist($survey);
+            $this->em->flush();
 
             $nextAction = $form->get('saveAndAdd')->isClicked() ? 'admin_survey_new' : 'admin_survey_index';
 
@@ -47,7 +53,7 @@ final class SurveyController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'admin_survey_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'show', methods: ['GET'])]
     public function show(Survey $survey): Response
     {
         return $this->render('admin/survey/show.html.twig', [
@@ -55,22 +61,44 @@ final class SurveyController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'admin_survey_delete', methods: ['DELETE'])]
-    public function delete(Request $request, Survey $survey, EntityManagerInterface $em): Response
+    #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
+    public function delete(Request $request, Survey $survey): Response
     {
         if ($this->isCsrfTokenValid('delete'.$survey->getId(), $request->getPayload()->getString('_token'))) {
 
             // On n'efface pas les réponses, mais plutôt l'id des questions
             foreach ($survey->getAnswers() as $answer) {
                 $answer->setSurvey(null);
-                $em->persist($survey);
+                $this->em->persist($survey);
             }
 
-            $em->remove($survey);
-
-            $em->flush();
+            $this->em->remove($survey);
+            $this->em->flush();
         }
 
+        $this->addFlash('success', "La suppression à bien été supprimé avec succès.");
+
         return $this->redirectToRoute('admin_survey_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/delete', name: 'delete_all', methods: ['POST'])]
+    public function deleteAll(Request $request): RedirectResponse
+    {
+        $rowsId = $request->getPayload()->get('_selected_rows');
+
+        if (!empty($rowsId)) {
+            $dataId = explode(',', $rowsId);
+
+            foreach ($dataId as $id) {
+                $survey = $this->surveys->findOneBy(['id' => $id]);
+                $this->em->remove($survey);
+            }
+
+            $this->em->flush();
+        }
+
+        $this->addFlash('success', "La suppression à bien été supprimé avec succès.");
+
+        return $this->redirectToRoute('admin_survey_index');
     }
 }

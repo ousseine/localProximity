@@ -1,0 +1,5 @@
+{% for type, message in app.flashes %}
+    <div class="border border-border rounded-md px-4 py-3 mb-8 text-sm font-medium bg-{{ type }} text-{{ type }}-foreground">
+        {{ message|join(',') }}
+    </div>
+{% endfor %}

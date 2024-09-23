@@ -30,6 +30,10 @@ class SurveyController extends AbstractController
 
         $surveys = $this->surveys->findAll();
 
+        // Si aucune question n'est enregistré
+        if (empty($surveys))
+            return $this->redirectToRoute('survey_error');
+
         if (empty($surveys[$page]))
             return $this->redirectToRoute('survey_completed');
 
@@ -74,6 +78,12 @@ class SurveyController extends AbstractController
         return $this->render('survey/completed.html.twig');
     }
 
+    #[Route('/erreur',name: 'survey_error')]
+    public function error(): Response
+    {
+        return $this->render('survey/error.html.twig');
+    }
+
     // Traitement du formulaire des réponses
     private function answer($page, Survey $survey, $form, $session, $request): RedirectResponse
     {
@@ -83,7 +93,7 @@ class SurveyController extends AbstractController
             $response = $form->get('response-'.$question->getId())->getData();
 
             if (!$response) {
-                $this->addFlash('warning', "Veillez renseigner votre lieu de résidence sur la carte");
+                $this->addFlash('danger', "Veillez renseigner votre lieu de résidence sur la carte");
                 return $this->redirectToRoute('survey_index');
             }
 

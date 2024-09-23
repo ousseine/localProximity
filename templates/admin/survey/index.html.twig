@@ -4,59 +4,70 @@
 
 {% block admin %}
 
-    <section class="relative flex flex-col min-w-0 break-words bg-card w-full mb-6 md:shadow-lg rounded">
-        <div class="rounded-t mb-0 p-6 border-b border-border">
-            <div class="flex flex-wrap items-center">
-                <div class="relative w-full max-w-full flex-grow flex-1">
-                    <h2>Questions Index</h2>
-                </div>
-                <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-                    <a href="{{ path('admin_survey_new') }}" class="btn btn-sm btn-primary uppercase">Nouveau</a>
-                </div>
+    <section class="relative flex flex-col min-w-0 break-words bg-card w-full">
+        <div class="flex flex-wrap items-center">
+            <div class="relative w-full max-w-full flex-grow flex-1">
+                <h2>Questions Index</h2>
+            </div>
+            <div class="relative w-full max-w-full flex-grow flex-1 text-right">
+                <a href="{{ path('admin_survey_new') }}" class="btn btn-sm btn-primary">Nouveau</a>
             </div>
         </div>
 
-        <div class="block w-full overflow-x-auto">
-            <table class="items-center bg-transparent w-full border-collapse">
-                <thead>
-                <tr class="bg-muted">
-                    <th class="px-8 bg-blueGray-50 align-middle py-3 text-base text-card-foreground uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                        #
-                    </th>
-                    <th class="px-8 bg-blueGray-50 align-middle py-3 text-base text-card-foreground uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                        Label
-                    </th>
-                    <th class="px-8 bg-blueGray-50 align-middle py-3 text-base text-card-foreground uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"></th>
-                </tr>
-                </thead>
-
-                <tbody>
-                {% for survey in surveys %}
+        <div class="mt-6 md:shadow-lg rounded border border-border block w-full overflow-x-auto" data-controller="checkbox">
+            {% if surveys|length > 0 %}
+                <table class="items-center bg-transparent w-full border-collapse">
+                    <thead>
                     <tr>
-                        <th class="border-t-0 px-8 align-middle border-l-0 border-r-0 text-base text-card-foreground whitespace-nowrap p-4 text-left">
-                            {{ loop.index }}
-                        </th>
-                        <td class="border-t-0 px-8 align-middle border-l-0 border-r-0 text-base text-card-foreground whitespace-nowrap p-4 ">
-                            {{ survey.title }}
-                        </td>
-                        <td class="border-t-0 px-8 align-center border-l-0 border-r-0 text-base text-card-foreground whitespace-nowrap p-4">
-                            <div class="flex justify-end items-center gap-x-2">
-                                <a href="{{ path('admin_survey_edit', {'id': survey.id}) }}" class="text-primary font-medium text-xs uppercase hover:text-primary/80">edit</a>
-                                <a href="{{ path('admin_survey_show', {'id': survey.id}) }}" class="text-muted-foreground font-medium text-xs uppercase hover:text-primary/90">voir</a>
-                                {{ include('admin/survey/_delete_form.html.twig') }}
+                        <th class="w-0 md:w-64 px-8 align-middle py-5 text-base text-card-foreground uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                            <div class="flex items-center gap-x-6">
+                                <input type="checkbox" id="delete_all" name="delete_all" class="block" data-checkbox-target="rowCheckboxAll">
+                                <label for="delete_all" class="text-xs sr-only" data-checkbox-target="rowNumber" data-checkbox-row-checked-value="">Tous sélectionner</label>
                             </div>
-                        </td>
+                        </th>
+                        <th class="px-8 align-middle py-3 text-xs text-card-foreground uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                            Label
+                        </th>
+                        <th class="px-8 align-middle py-3 text-base text-card-foreground uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-end">
+                            <form name="form_delete"
+                                  action="{{ path('admin_survey_delete_all') }}"
+                                  class="hidden transition-all duration-300"
+                                  method="post"
+                                  data-checkbox-target="deleteForm"
+                            >
+                                <input type="hidden" id="selected_rows" name="_selected_rows" data-checkbox-target="rows">
+                                <button type="submit" class="btn btn-sm btn-destructive">Supprimer</button>
+                            </form>
+                        </th>
                     </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="3" class="p-6 text-lg font-bold text-foreground leading-9 tracking-tight">
-                            Aucune question enregistrée
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
+                    </thead>
 
-            </table>
+                    <tbody>
+                    {% for survey in surveys %}
+                        <tr>
+                            <th class="border-t-0 px-8 align-middle border-l-0 border-r-0 text-base text-card-foreground whitespace-nowrap p-4 text-left">
+                                <label><input type="checkbox" name="checkbox_delete[]" value="{{ survey.id }}" data-checkbox-target="rowCheckbox"></label>
+                            </th>
+                            <td class="border-t-0 px-8 align-middle border-l-0 border-r-0 text-base text-card-foreground whitespace-nowrap p-4 ">
+                                {{ survey.title|u.truncate(80, ' ...') }}
+                            </td>
+                            <td class="border-t-0 px-8 align-center border-l-0 border-r-0 text-base text-card-foreground whitespace-nowrap p-4">
+                                <div class="flex justify-end items-center gap-x-2">
+                                    <a href="{{ path('admin_survey_edit', {'id': survey.id}) }}" class="text-primary font-medium text-xs uppercase hover:text-primary/80">edit</a>
+                                    <a href="{{ path('admin_survey_show', {'id': survey.id}) }}" class="text-muted-foreground font-medium text-xs uppercase hover:text-primary/90">voir</a>
+                                    {{ include('admin/survey/_delete_form.html.twig') }}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+            {% else %}
+                <div class="p-6">
+                    <p class="font-bold text-lg leading-9 tracking-tight">Aucune question enregistrée</p>
+                </div>
+            {% endif %}
         </div>
     </section>
 

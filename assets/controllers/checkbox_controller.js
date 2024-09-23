@@ -67,9 +67,9 @@ export default class extends Controller {
         const selectedLine = this.rowCheckboxTargets.filter(checkbox => checkbox.checked).length
 
         if (this.rowCheckboxTargets.length === selectedLine) {
-            this.checkedValue = "Tous les lignes sont sélectionnées"
+            this.checkedValue = "Toutes sélections"
         } else {
-            const ligneText = selectedLine > 1 ? 'lignes sélectionnées' : 'ligne sélectionnée'
+            const ligneText = selectedLine > 1 ? 'sélections' : 'sélection'
             this.checkedValue = `${selectedLine} ${ligneText}`
         }
     }

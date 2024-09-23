@@ -16,9 +16,7 @@
         </div>
 
         <div class="bg-background mt-8 mb-12 md:shadow-xl shadow-input w-full max-w-6xl mx-auto px-4 sm:px-8 py-12">
-            {% for message in app.flashes('warning') %}
-                <div class="bg-destructive border border-border rounded-md px-4 py-3 mb-8 text-sm font-medium text-destructive-foreground">{{ message }}</div>
-            {% endfor %}
+            {{ include('include/_alert.html.twig') }}
 
             <div class="w-full bg-accent h-1.5 rounded-full">
                 <div class="h-full bg-primary rounded-lg transition-colors ease-in-out duration-300" style="width: {{ ((page) / pages) * 100 }}%;"></div>
