@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Answer;
 use App\Entity\Survey;
 use App\Form\AnswerType;
+use App\Repository\AboutRepository;
 use App\Repository\SurveyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +20,7 @@ class SurveyController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly SurveyRepository $surveys,
+        private readonly AboutRepository $abouts
     ) {
     }
 
@@ -26,6 +28,10 @@ class SurveyController extends AbstractController
     #[Route('/{page<\d+>}',name: 'survey_question')]
     public function index(?int $page, Request $request): Response
     {
+        $about = $this->abouts->findOneBy([
+            'name' => 'sondage'
+        ]);
+
         if (!$page) $page = 0;
 
         $surveys = $this->surveys->findAll();
@@ -51,6 +57,8 @@ class SurveyController extends AbstractController
             'survey' => $survey,
             'page' => $page + 1,
             'pages' => count($this->surveys->findAll()),
+            'title' => $about->getTitle(),
+            'description' => $about->getDescription(),
         ]);
     }
 

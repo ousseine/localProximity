@@ -15,6 +15,12 @@
 
             <ul class="px-2 py-3 flex items-center flex-col w-full">
                 <li class="w-full text-foreground hover:bg-background hover:text-foreground transition-colors duration-300">
+                    <a href="{{ path('admin_about_index') }}" class="inline-block w-full flex items-center px-3 py-3">
+                        <twig:ux:icon name="mdi:about-circle-outline" class="size-8" />
+                        <span class="block ml-4 hidden font-medium text-base">A propos</span>
+                    </a>
+                </li>
+                <li class="w-full text-foreground hover:bg-background hover:text-foreground transition-colors duration-300">
                     <a href="{{ path('admin_answer_index') }}" class="inline-block w-full flex items-center px-3 py-3">
                         <twig:ux:icon name="flowbite:adjustments-horizontal-outline" class="size-8" />
                         <span class="block ml-4 hidden font-medium text-base">Réponse</span>

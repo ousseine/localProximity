@@ -123,6 +123,7 @@
 /* Forms */
 [type="text"],
 [type='email'],
+textarea,
 [type='password'] {
     @apply bg-background border-none rounded ring-1 ring-input text-sm font-medium leading-none text-foreground focus:outline-none focus:ring-primary placeholder:text-muted-foreground py-2 w-full px-3 mt-1;
 }
