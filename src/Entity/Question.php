@@ -43,13 +43,13 @@ class Question
     private ?Survey $survey = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private string $direction = 'verticale';
+    private ?string $direction = 'verticale';
 
     #[ORM\Column(length: 255, nullable: true)]
-    private string $measure_left = '';
+    private ?string $measure_left = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private string $measure_right = '';
+    private ?string $measure_right = null;
 
     public function __construct()
     {
@@ -186,7 +186,7 @@ class Question
         return $this->direction;
     }
 
-    public function setDirection(string $direction): static
+    public function setDirection(?string $direction): static
     {
         $this->direction = $direction;
 
@@ -198,7 +198,7 @@ class Question
         return $this->measure_left;
     }
 
-    public function setMeasureLeft(string $measure_left): static
+    public function setMeasureLeft(?string $measure_left): static
     {
         $this->measure_left = $measure_left;
 
@@ -210,7 +210,7 @@ class Question
         return $this->measure_right;
     }
 
-    public function setMeasureRight(string $measure_right): static
+    public function setMeasureRight(?string $measure_right): static
     {
         $this->measure_right = $measure_right;
 

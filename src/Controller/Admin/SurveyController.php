@@ -41,6 +41,7 @@ final class SurveyController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$survey->getId()) $this->em->persist($survey);
+            $survey->setPriority($survey->getId());
             $this->em->flush();
 
             $nextAction = $form->get('saveAndAdd')->isClicked() ? 'admin_survey_new' : 'admin_survey_index';

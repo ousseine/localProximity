@@ -28,7 +28,6 @@ class SurveyType extends AbstractType
                 'empty_data' => '',
                 'required' => false
             ])
-            ->add('priority', IntegerType::class)
             ->add('questions', CollectionType::class, [
                 'entry_type' => QuestionType::class,
                 'entry_options' => ['label' => false],

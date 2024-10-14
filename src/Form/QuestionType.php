@@ -43,7 +43,6 @@ class QuestionType extends AbstractType
                 'required' => false
             ])
             ->add('direction', ChoiceType::class, [
-                'empty_data' => '',
                 'label' => 'Orientation de la question',
                 'required' => false,
                 'choices' => [
@@ -53,7 +52,6 @@ class QuestionType extends AbstractType
                 'autocomplete' => true,
             ])
             ->add('measure_left', ChoiceType::class, [
-                'empty_data' => '',
                 'label' => 'Mesure à gauche',
                 'required' => false,
                 'choices' => [
@@ -66,7 +64,6 @@ class QuestionType extends AbstractType
                 'autocomplete' => true,
             ])
             ->add('measure_right', ChoiceType::class, [
-                'empty_data' => '',
                 'label' => 'Mesure à droite',
                 'required' => false,
                 'choices' => [
