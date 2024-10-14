@@ -42,6 +42,15 @@ class Question
     #[ORM\ManyToOne(inversedBy: 'questions')]
     private ?Survey $survey = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private string $direction = 'verticale';
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private string $measure_left = '';
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private string $measure_right = '';
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -168,6 +177,42 @@ class Question
     public function setSurvey(?Survey $survey): static
     {
         $this->survey = $survey;
+
+        return $this;
+    }
+
+    public function getDirection(): ?string
+    {
+        return $this->direction;
+    }
+
+    public function setDirection(string $direction): static
+    {
+        $this->direction = $direction;
+
+        return $this;
+    }
+
+    public function getMeasureLeft(): ?string
+    {
+        return $this->measure_left;
+    }
+
+    public function setMeasureLeft(string $measure_left): static
+    {
+        $this->measure_left = $measure_left;
+
+        return $this;
+    }
+
+    public function getMeasureRight(): ?string
+    {
+        return $this->measure_right;
+    }
+
+    public function setMeasureRight(string $measure_right): static
+    {
+        $this->measure_right = $measure_right;
 
         return $this;
     }

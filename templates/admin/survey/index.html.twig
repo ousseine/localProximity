@@ -41,10 +41,9 @@
                         </th>
                     </tr>
                     </thead>
-
-                    <tbody>
+                    <tbody data-controller="priority-drag-and-drop">
                     {% for survey in surveys %}
-                        <tr>
+                        <tr class="cursor-pointer transition-colors hover:bg-muted" data-id="{{ survey.id }}">
                             <th class="border-t-0 px-8 align-middle border-l-0 border-r-0 text-base text-card-foreground whitespace-nowrap p-4 text-left">
                                 <label><input type="checkbox" name="checkbox_delete[]" value="{{ survey.id }}" data-checkbox-target="rowCheckbox"></label>
                             </th>

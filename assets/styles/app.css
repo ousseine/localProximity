@@ -154,16 +154,37 @@ form[name='answer'] {
     @apply mt-3 space-y-3;
 }
 
-[id^='answer_response-'] div {
+.verticale [id^='answer_response-'] div {
     @apply flex-row-reverse justify-between items-center border border-input rounded-md hover:bg-accent;
 }
 
-[id^='answer_response-'] input {
+.verticale input {
     @apply hidden;
 }
 
-[id^='answer_response-'] label {
+.verticale label {
     @apply w-full flex items-center justify-between text-sm text-foreground px-4 py-2 cursor-pointer after:content-[''] after:border after:border-input after:rounded-full after:size-6 after:block;
+}
+
+.horizontale {
+    @apply mt-3 flex items-center gap-5;
+}
+
+.horizontale [id^='answer_response-'] {
+    @apply flex items-center gap-5 justify-between;
+}
+
+.horizontale [id^='answer_response-'] div,
+.horizontale [id^='answer_response-'] {
+    @apply !mt-0;
+}
+
+.horizontale input {
+    @apply mt-0 size-5 cursor-pointer;
+}
+
+.horizontale label {
+    @apply hidden;
 }
 
 [id^='answer_response-']:checked + label::after {

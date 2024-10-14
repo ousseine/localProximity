@@ -36,6 +36,9 @@ class Survey
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private string $description = '';
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $priority = null;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -144,6 +147,18 @@ class Survey
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getPriority(): ?int
+    {
+        return $this->priority;
+    }
+
+    public function setPriority(?int $priority): static
+    {
+        $this->priority = $priority;
 
         return $this;
     }

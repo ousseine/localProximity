@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Survey;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,6 +28,7 @@ class SurveyType extends AbstractType
                 'empty_data' => '',
                 'required' => false
             ])
+            ->add('priority', IntegerType::class)
             ->add('questions', CollectionType::class, [
                 'entry_type' => QuestionType::class,
                 'entry_options' => ['label' => false],

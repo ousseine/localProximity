@@ -42,6 +42,42 @@ class QuestionType extends AbstractType
                 'label' => 'Champ obligatoire',
                 'required' => false
             ])
+            ->add('direction', ChoiceType::class, [
+                'empty_data' => '',
+                'label' => 'Orientation de la question',
+                'required' => false,
+                'choices' => [
+                    'verticale' => 'verticale',
+                    'horizontale' => 'horizontale',
+                ],
+                'autocomplete' => true,
+            ])
+            ->add('measure_left', ChoiceType::class, [
+                'empty_data' => '',
+                'label' => 'Mesure à gauche',
+                'required' => false,
+                'choices' => [
+                    'vide' => '',
+                    'Facilement' => 'Facilement',
+                    'Difficilement' => 'Difficilement',
+                    'Jamais' => 'Jamais',
+                    'Plus souvent' => 'Plus souvent'
+                ],
+                'autocomplete' => true,
+            ])
+            ->add('measure_right', ChoiceType::class, [
+                'empty_data' => '',
+                'label' => 'Mesure à droite',
+                'required' => false,
+                'choices' => [
+                    'vide' => '',
+                    'Facilement' => 'Facilement',
+                    'Difficilement' => 'Difficilement',
+                    'Jamais' => 'Jamais',
+                    'Plus souvent' => 'Plus souvent'
+                ],
+                'autocomplete' => true,
+            ])
             ->add('options', OptionAutocompleteField::class)
         ;
     }

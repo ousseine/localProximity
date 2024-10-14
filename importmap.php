@@ -67,4 +67,7 @@ return [
     '@swup/debug-plugin' => [
         'version' => '3.0.0',
     ],
+    'sortablejs' => [
+        'version' => '1.15.3',
+    ],
 ];

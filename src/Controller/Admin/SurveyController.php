@@ -19,14 +19,15 @@ final class SurveyController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly SurveyRepository $surveys
-    ) {}
+        private readonly SurveyRepository $surveys,
+    ) {
+    }
 
     #[Route(name: 'index', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render('admin/survey/index.html.twig', [
-            'surveys' => $this->surveys->findAll(),
+            'surveys' => $this->surveys->findByPriorityAsc(),
         ]);
     }
 
@@ -51,6 +52,28 @@ final class SurveyController extends AbstractController
             'survey' => $survey,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/update-priority', name: 'update.priority', methods: ['GET', 'POST'])]
+    public function updatePriority(Request $request): Response
+    {
+        $ids = json_decode($request->getContent(), true);
+
+        $surveys = $this->surveys->findBy(['id' => $ids]);
+
+        $surveyIds = [];
+        foreach ($surveys as $survey) {
+            $surveyIds[$survey->getId()] = $survey;
+        }
+
+        foreach ($ids as $priority => $id) {
+            if (isset($surveyIds[$id])) {
+                $surveyIds[$id]->setPriority($priority + 1);
+            }
+            $this->em->flush();
+        }
+
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     #[Route('/{id}', name: 'show', methods: ['GET'])]

@@ -34,7 +34,7 @@ class SurveyController extends AbstractController
 
         if (!$page) $page = 0;
 
-        $surveys = $this->surveys->findAll();
+        $surveys = $this->surveys->findByPriorityAsc();
 
         // Si aucune question n'est enregistré
         if (empty($surveys))
@@ -57,8 +57,8 @@ class SurveyController extends AbstractController
             'survey' => $survey,
             'page' => $page + 1,
             'pages' => count($this->surveys->findAll()),
-            'title' => $about->getTitle(),
-            'description' => $about->getDescription(),
+            'title' => $about ? $about->getTitle() : "Sondage",
+            'description' => $about ? $about->getDescription() : "Description du sondage",
         ]);
     }
 
@@ -100,10 +100,13 @@ class SurveyController extends AbstractController
         foreach ($survey->getQuestions()->toArray() as $question) {
             $response = $form->get('response-'.$question->getId())->getData();
 
-            if (!$response) {
+            $path = $request->attributes->get('_route');
+            if ($path == 'survey_index' && !$response) {
                 $this->addFlash('danger', "Veillez renseigner votre lieu de résidence sur la carte");
                 return $this->redirectToRoute('survey_index');
             }
+
+            if (!$response) return $this->redirectToRoute('survey_question', ['page' => $page]);
 
             $answer = new Answer();
             $answer->setResponse($response);

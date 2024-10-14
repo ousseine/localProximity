@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/admin/about')]
+#[Route('/localProximity/about')]
 final class AboutController extends AbstractController
 {
     #[Route(name: 'admin_about_index', methods: ['GET'])]
