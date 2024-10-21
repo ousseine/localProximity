@@ -55,7 +55,7 @@ class AnswerType extends AbstractType
                             'rows' => 5,
                             'data-swup-submit-target' => 'areaFields'
                         ],
-                        'mapped' => false
+                        'mapped' => false,
                     ]);
                     break;
                 case 'unique_choice':
