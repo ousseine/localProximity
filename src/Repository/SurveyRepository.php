@@ -19,7 +19,6 @@ class SurveyRepository extends ServiceEntityRepository
     public function findByPriorityAsc()
     {
         return $this->createQueryBuilder('s')
-            ->orderBy('s.priority', 'ASC')
             ->getQuery()
             ->getResult();
     }

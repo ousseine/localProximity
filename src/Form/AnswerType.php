@@ -26,7 +26,7 @@ class AnswerType extends AbstractType
             switch ($question->getType()) {
                 case 'hidden':
                     $builder->add($response, HiddenType::class, [
-                        'label' => $question->getLabel() ? $question->getlabel() : '',
+                        'label' => false,
                         'required' => $question->isRequired(),
                         'mapped' => false,
                         'attr' => [

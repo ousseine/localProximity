@@ -1,6 +1,6 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Option index{% endblock %}
+{% block title %}Emails index{% endblock %}
 
 {% block admin %}
 
@@ -9,22 +9,18 @@
     <section class="relative flex flex-col min-w-0 break-words bg-card w-full">
         <div class="flex flex-wrap items-center">
             <div class="relative w-full max-w-full flex-grow flex-1">
-                <h2>Options Index</h2>
-            </div>
-            <div class="relative w-full space-y-3 max-w-full flex-grow flex-1 text-right">
-                <a href="{{ path('admin_option_new') }}" class="btn btn-sm btn-primary">Nouveau</a>
+                <h2>Emails Index</h2>
             </div>
         </div>
 
         <div class="mt-6 md:shadow-lg rounded border border-border block w-full overflow-x-auto" data-controller="checkbox">
-            {% if options|length > 0 %}
+            {% if emails|length > 0 %}
                 <table class="items-center bg-transparent w-full border-collapse ">
                     <thead>
                     <tr class="border-b border-border">
                         <th class="w-0 md:w-64 px-8 align-middle py-5 text-xs text-card-foreground uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                             <div class="flex items-center w-full">
                                 <input type="checkbox" id="delete_all" name="delete_all" class="block" data-checkbox-target="rowCheckboxAll">
-                                <label for="delete_all" class="text-xs sr-only ml-6" data-checkbox-target="rowNumber" data-checkbox-row-checked-value="">Tous sélectionner</label>
                             </div>
                         </th>
                         <th class="px-8 align-middle py-3 text-xs text-card-foreground uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
@@ -32,31 +28,30 @@
                         </th>
                         <th class="px-8 align-middle py-3 text-base text-card-foreground uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-end">
                             <form name="form_delete"
-                                  action="{{ path('admin_option_delete_all') }}"
+                                  action="{{ path('admin_email_delete_all') }}"
                                   class="hidden transition-all duration-300"
                                   method="post"
                                   data-checkbox-target="deleteForm"
                             >
                                 <input type="hidden" id="selected_rows" name="_selected_rows" data-checkbox-target="rows">
-                                <button type="submit" class="btn btn-sm btn-destructive">Supprimer</button>
+                                <button type="submit" class="btn btn-sm btn-destructive">Supprimer ({{ emails|length }})</button>
                             </form>
                         </th>
                     </tr>
                     </thead>
 
                     <tbody>
-                    {% for option in options %}
+                    {% for email in emails %}
                         <tr>
                             <th class="border-t-0 px-8 align-middle border-l-0 border-r-0 text-base text-card-foreground whitespace-nowrap p-4 text-left">
-                                <label><input type="checkbox" name="checkbox_delete[]" value="{{ option.id }}" data-checkbox-target="rowCheckbox"></label>
+                                <label><input type="checkbox" name="checkbox_delete[]" value="{{ email.id }}" data-checkbox-target="rowCheckbox"></label>
                             </th>
                             <td class="border-t-0 px-8 align-middle border-l-0 border-r-0 text-base text-card-foreground whitespace-nowrap p-4 ">
-                                {{ option.label }}
+                                {{ email }}
                             </td>
                             <td class="border-t-0 px-8 align-center border-l-0 border-r-0 text-base text-card-foreground whitespace-nowrap p-4">
                                 <div class="flex justify-end items-center gap-x-2">
-                                    <a href="{{ path('admin_option_edit', {'id': option.id}) }}" class="text-primary font-medium text-xs uppercase hover:text-primary/80">edit</a>
-                                    {{ include('admin/option/_delete_form.html.twig') }}
+                                    {{ include('admin/email/_delete_form.html.twig') }}
                                 </div>
                             </td>
                         </tr>
@@ -67,7 +62,7 @@
             {% else %}
                 <div class="p-6">
                     <p class="text-lg font-bold leading-9 tracking-tight">
-                        Aucune option enregistrée
+                        Aucun email enregistré
                     </p>
                 </div>
             {% endif %}

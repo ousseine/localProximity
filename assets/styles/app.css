@@ -215,3 +215,7 @@ form[name='survey'] #survey_questions > .mb-6 {
 form[name='survey'] #survey_questions > .mb-6 .inline-flex {
     @apply !flex;
 }
+
+form li {
+    @apply text-sm text-destructive;
+}

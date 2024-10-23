@@ -27,7 +27,18 @@
             {% if page > 0 and page <= 1 %}
                 <h3>{{ survey.title }}</h3>
                 <p class="text-sm md:text-lg">{{ survey.description }}</p>
+
                 <address-map></address-map>
+                {% for question in survey.questions %}
+                    <div class="w-full row-list {{ question.direction }}">
+                        {{ form_errors(form['response-' ~ question.id]) }}
+                        {% if question.label and question.type != 'hidden' %}
+                            <label for="answer_{{ 'response-' ~ question.id }}" class="block text-foreground text-base md:text-lg">{{ question.label }}</label>
+                        {% endif %}
+
+                        {{ form_widget(form['response-' ~ question.id], {attr: {class: question.name}}) }}
+                    </div>
+                {% endfor %}
             {% else %}
                 <a href="{{ path('survey_question', {page: page - 2 }) }}" class="flex items-center text-sm text-foreground transition-colors duration-300 hover:text-primary">
                     <twig:ux:icon name="ri:arrow-left-s-line" class="size-5 mr-0.5" />Retour
@@ -56,6 +67,7 @@
             {% endif %}
 
             <div class="w-full flex items-center justify-center gap-x-4">
+                {# TODO :: eviter que le bouton se voit en une fraction de second #}
                 {{ form_widget(form.save, {attr: {'data-swup-submit-target': 'submitButton'}}) }}
                 {% for question in survey.questions %}
                     {% if not question.required %}

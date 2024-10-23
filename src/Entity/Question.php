@@ -30,7 +30,7 @@ class Question
     /**
      * @var Collection<int, Option>
      */
-    #[ORM\ManyToMany(targetEntity: Option::class, inversedBy: 'questions', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: Option::class, inversedBy: 'questions', cascade: ['persist'])]
     private Collection $options;
 
     /**

@@ -22,7 +22,7 @@ class Option
     /**
      * @var Collection<int, Question>
      */
-    #[ORM\ManyToMany(targetEntity: Question::class, mappedBy: 'options')]
+    #[ORM\ManyToMany(targetEntity: Question::class, mappedBy: 'options', orphanRemoval: true)]
     private Collection $questions;
 
     public function __construct()

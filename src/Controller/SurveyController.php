@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Answer;
+use App\Entity\Email;
 use App\Entity\Survey;
 use App\Form\AnswerType;
+use App\Form\EmailFormType;
 use App\Repository\AboutRepository;
 use App\Repository\SurveyRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,7 +22,7 @@ class SurveyController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly SurveyRepository $surveys,
-        private readonly AboutRepository $abouts
+        private readonly AboutRepository $abouts,
     ) {
     }
 
@@ -29,7 +31,7 @@ class SurveyController extends AbstractController
     public function index(?int $page, Request $request): Response
     {
         $about = $this->abouts->findOneBy([
-            'name' => 'sondage'
+            'name' => 'sondage',
         ]);
 
         if (!$page) $page = 0;
@@ -62,8 +64,8 @@ class SurveyController extends AbstractController
         ]);
     }
 
-    #[Route('/complete',name: 'survey_completed')]
-    public function completed(Request $request): Response
+    #[Route('/survey-completed', name: 'survey_completed', methods: ['GET', 'POST'])]
+    public function completed(Request $request, EntityManagerInterface $em): Response
     {
         $answers = $request->getSession()->get('answers');
 
@@ -71,19 +73,25 @@ class SurveyController extends AbstractController
             return $this->redirectToRoute('survey_index');
         }
 
-        foreach ($answers as $row) {
-            /** @var Answer $answer */
-            $answer = $row;
+        $this->sendSondage($answers, $request);
 
-            $this->em->persist($answer);
-            $this->em->flush();
+        $email = new Email();
+        $form = $this->createForm(EmailFormType::class, $email);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($email);
+            $em->flush();
+
+            $this->addFlash('success', "Votre message à bien été envoyé. Nous vous tiendrons au courant de la suite du sondage");
+
+            return $this->redirectToRoute('survey_email');
         }
 
-        // On supprime l'id de la session une fois le sondage terminé
-        $request->getSession()->remove('session_id');
-        $request->getSession()->remove('answers');
-
-        return $this->render('survey/completed.html.twig');
+        return $this->render('survey/completed.html.twig', [
+            'form' => $form,
+            'email' => $form,
+        ]);
     }
 
     #[Route('/erreur',name: 'survey_error')]
@@ -135,5 +143,20 @@ class SurveyController extends AbstractController
         }
 
         return $sessionId;
+    }
+
+    private function sendSondage($answers, Request $request): void
+    {
+        foreach ($answers as $row) {
+            /** @var Answer $answer */
+            $answer = $row;
+
+            $this->em->persist($answer);
+            $this->em->flush();
+        }
+
+        // On supprime l'id de la session une fois le sondage terminé
+        $request->getSession()->remove('session_id');
+        $request->getSession()->remove('answers');
     }
 }

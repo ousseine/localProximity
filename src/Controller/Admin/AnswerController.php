@@ -13,8 +13,8 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/localProximity/answer', name: 'admin_answer_')]
 #[IsGranted("ROLE_ADMIN")]
+#[Route('/localProximity/answer', name: 'admin_answer_')]
 class AnswerController extends AbstractController
 {
     public function __construct(
