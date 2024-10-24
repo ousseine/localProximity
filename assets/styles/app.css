@@ -167,11 +167,18 @@ form[name='answer'] {
 }
 
 .horizontale {
-    @apply mt-3 flex items-center gap-5 border border-border rounded p-3;
+    @apply mt-3 flex items-center justify-between gap-5 border border-border rounded p-3;
 }
 
 .horizontale [id^='answer_response-'] {
     @apply flex items-center gap-x-2 sm:gap-x-5 justify-between;
+}
+
+.horizontale [id^='answer_response-'] div {
+    @apply flex-col-reverse gap-y-1;
+}
+.horizontale [id^='answer_response-'] div label {
+    @apply text-[9px] text-center;
 }
 
 .horizontale [id^='answer_response-'] div,
@@ -181,10 +188,6 @@ form[name='answer'] {
 
 .horizontale input {
     @apply mt-0 size-5 cursor-pointer;
-}
-
-.horizontale label {
-    @apply hidden;
 }
 
 [id^='answer_response-']:checked + label::after {

@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
     <div class="bg-gradient-to-b from-primary via-primary/80 to-primary/50 px-4 md:px-8 md:py-20 py-12">
         <div class="max-w-screen-xl mx-auto text-center">
             <div class="title">{{ title }}</div>
@@ -30,13 +31,14 @@
 
                 <address-map></address-map>
                 {% for question in survey.questions %}
-                    <div class="w-full row-list {{ question.direction }}">
+                    <div class="w-full row-list">
                         {{ form_errors(form['response-' ~ question.id]) }}
                         {% if question.label and question.type != 'hidden' %}
                             <label for="answer_{{ 'response-' ~ question.id }}" class="block text-foreground text-base md:text-lg">{{ question.label }}</label>
                         {% endif %}
-
-                        {{ form_widget(form['response-' ~ question.id], {attr: {class: question.name}}) }}
+                        <div class="{{ question.direction }}">
+                            {{ form_widget(form['response-' ~ question.id], {attr: {class: question.name}}) }}
+                        </div>
                     </div>
                 {% endfor %}
             {% else %}
@@ -46,20 +48,24 @@
                 <h3 class="text-center mb-8">{{ survey.title }}</h3>
 
                 <div class="space-y-8 max-w-xl mx-auto">
+
+
+
                     {% for question in survey.questions %}
+
                         <div class="w-full row-list">
                             {{ form_errors(form['response-' ~ question.id]) }}
                             {% if question.label %}
                                 <label for="answer_{{ 'response-' ~ question.id }}" class="block text-foreground text-base md:text-lg">{{ question.label }}</label>
                             {% endif %}
                             <div class="{{ question.direction }}">
-                                {% if (question.type == 'unique_choice' or question.type == 'multiple_choice') and question.direction == 'horizontale'  %}
-                                    <p class="text-sm">{{ question.measureLeft }}</p>
-                                {% endif %}
+{#                                {% for option in question.options %}#}
+{#                                    <div class="flex flex-col items-center">#}
+{#                                        <label for="{{ option }}" class="text-[9px] text-center mb-0.5">{{ option }}</label>#}
+{#                                        <input type="radio" id="{{ option }}" value="{{ option }}">#}
+{#                                    </div>#}
+{#                                {% endfor %}#}
                                 {{ form_widget(form['response-' ~ question.id], {attr: {class: 'flex-1'}}) }}
-                                {% if (question.type == 'unique_choice' or question.type == 'multiple_choice') and question.direction == 'horizontale' %}
-                                    <p class="text-sm">{{ question.measureRight }}</p>
-                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}
