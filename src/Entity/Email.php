@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\EmailRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\UniqueConstraint(name: 'UNIQ_EMAIL', fields: ['email'])]
 #[UniqueEntity('email', message: "Votre email est déjà envoyé")]
@@ -16,6 +17,8 @@ class Email
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
+    #[Assert\Email]
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'string', length: 180, unique: true, nullable: true)]
     private ?string $email = null;
 

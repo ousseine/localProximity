@@ -25,6 +25,11 @@
             {{ form_row(form.type) }}
             {{ form_row(form.required) }}
             {{ form_row(form.options) }}
+            {{ form_row(form.direction) }}
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-6">
+                <div class="sm:col-span-3">{{ form_row(form.measure_left) }}</div>
+                <div class="sm:col-span-3">{{ form_row(form.measure_right) }}</div>
+            </div>
 
             <button class="btn btn-primary">
                 {{ root == 'admin_question_new' ? 'Enregistrer' : 'Sauvegarder' }}

@@ -10,19 +10,19 @@ export default class Map extends HTMLElement {
             </div>`
 
         // Ajout du map
-        const southWest = L.latLng(41.3337, -5.1406); // Sud-Ouest
-        const northEast = L.latLng(51.124, 9.6625); // Nord-Est
+        const southWest = L.latLng(43.1707296235702, 5.123202687200266); // Sud-Ouest
+        const northEast = L.latLng(43.48077769291718, 5.658291264721558); // Nord-Est
         const bounds = L.latLngBounds(southWest, northEast);
         const options = {
             maxBounds: bounds,
             maxBoundsViscosity: 1.0
         }
 
-        const map = L.map('map', options).setView([43.2965, 5.3698], 14)
+        const map = L.map('map', options).setView([43.2965, 5.3698], 12)
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attributes: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-            minZoom: 14,
+            minZoom: 5,
             maxZoom: 19
         }).addTo(map);
 

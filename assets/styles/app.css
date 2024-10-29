@@ -146,6 +146,10 @@ form[name='answer'] {
     @apply mt-4;
 }
 
+.leaflet-control-geosearch form {
+    padding: 0 !important;
+}
+
 .row-list > label {
     @apply block;
 }
