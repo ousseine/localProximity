@@ -18,7 +18,7 @@ class Email
     private ?int $id = null;
 
     #[Assert\Email]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: "Ce champ est ne doit pas être vide.")]
     #[ORM\Column(type: 'string', length: 180, unique: true, nullable: true)]
     private ?string $email = null;
 

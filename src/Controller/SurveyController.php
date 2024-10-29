@@ -28,7 +28,7 @@ class SurveyController extends AbstractController
 
     #[Route(name: 'survey_index')]
     #[Route('/{page<\d+>}',name: 'survey_question')]
-    public function index(?int $page, Request $request): Response
+    public function index(?int $page, Request $request): RedirectResponse|Response
     {
         $about = $this->abouts->findOneBy([
             'name' => 'sondage',
@@ -68,7 +68,6 @@ class SurveyController extends AbstractController
     public function sended(Request $request): RedirectResponse
     {
         $answers = $request->getSession()->get('answers');
-        // $answerId = $request->getSession()->get('answer_id');
 
         if ($answers === null) {
             return $this->redirectToRoute('survey_index');
@@ -77,15 +76,11 @@ class SurveyController extends AbstractController
         foreach ($answers as $row) {
             /** @var Answer $answer */
             $answer = $row;
-            // $answerId = $answer->getId();
 
             $this->em->persist($answer);
             $this->em->flush();
         }
 
-        // $request->getSession()->set('answer_id', $answerId);
-        // On supprime l'id de la session une fois le sondage terminé
-        $request->getSession()->remove('session_id');
         $request->getSession()->remove('answers');
 
         return $this->redirectToRoute('survey_completed');
@@ -94,9 +89,8 @@ class SurveyController extends AbstractController
     #[Route('/survey-completed', name: 'survey_completed', methods: ['GET', 'POST'])]
     public function completed(Request $request, EntityManagerInterface $em): Response
     {
-        // TODO :: éviter qu'une personne ajouter plein d'adresse email inutile
-        // $answerId = $request->getSession()->get('answer_id');
-        // if (!$answerId) return $this->redirectToRoute('survey_index');
+        $sessionId = $request->getSession()->get('session_id');
+        if (!$sessionId) return $this->redirectToRoute('survey_index');
 
         $email = new Email();
         $form = $this->createForm(EmailFormType::class, $email);
@@ -105,16 +99,22 @@ class SurveyController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($email);
             $em->flush();
-            // $request->getSession()->remove('answer_id');
 
-            $this->addFlash('success', "Votre message à bien été envoyé. Nous vous tiendrons au courant de la suite du sondage");
-            return $this->redirectToRoute('survey_completed');
+            // On supprime l'id de la session une fois le sondage terminé
+            $request->getSession()->remove('session_id');
+            return $this->redirectToRoute('survey_finish');
         }
 
         return $this->render('survey/completed.html.twig', [
             'form' => $form,
             'email' => $form,
         ]);
+    }
+
+    #[Route('/survey-finish', name: 'survey_finish', methods: ['GET'])]
+    public function finish(): Response
+    {
+        return $this->render('survey/finish.html.twig');
     }
 
     #[Route('/erreur',name: 'survey_error')]
@@ -124,7 +124,7 @@ class SurveyController extends AbstractController
     }
 
     // Traitement du formulaire des réponses
-    private function answer($page, Survey $survey, $form, $session, $request): RedirectResponsek
+    private function answer($page, Survey $survey, $form, $session, $request): RedirectResponse
     {
         $answers = $request->getSession()->get('answers', []);
 

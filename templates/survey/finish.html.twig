@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title "Complète | Mobilité & proximité" %}
+
+{% block body %}
+    {{ include('include/_alert.html.twig') }}
+
+    <section class="py-12 sm:py-16 px-6 sm:px-8 flex min-h-screen justify-center bg-background">
+        <div class="mx-auto max-w-[32rem]">
+
+            <div class="text-center mb-12 sm:mb-16">
+                <p class="text-base sm:text-lg font-medium leading-8 text-primary/95">Mobilité & Proximité</p>
+                <h1 class="sm:mt-3 text-xl sm:text-4xl">Email envoyé</h1>
+                <p class="sm:mt-3 text-base sm:text-lg leading-relaxed text-foreground">
+                    Votre message a bien été envoyé. Nous vous tiendrons au courant de la suite du sondage.
+                </p>
+            </div>
+
+        </div>
+    </section>
+{% endblock %}
