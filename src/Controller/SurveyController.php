@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Answer;
 use App\Entity\Email;
+use App\Entity\Question;
 use App\Entity\Survey;
 use App\Form\AnswerType;
 use App\Form\EmailFormType;
 use App\Repository\AboutRepository;
 use App\Repository\SurveyRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,23 +32,15 @@ class SurveyController extends AbstractController
     #[Route('/{page<\d+>}',name: 'survey_question')]
     public function index(?int $page, Request $request): RedirectResponse|Response
     {
-        $about = $this->abouts->findOneBy([
-            'name' => 'sondage',
-        ]);
-
+        $about = $this->abouts->findOneBy(['name' => 'sondage']);
         if (!$page) $page = 0;
-
         $surveys = $this->surveys->findByPriorityAsc();
 
         // Si aucune question n'est enregistré
-        if (empty($surveys))
-            return $this->redirectToRoute('survey_error');
-
-        if (empty($surveys[$page]))
-            return $this->redirectToRoute('survey_sended');
+        if (empty($surveys)) return $this->redirectToRoute('survey_error');
+        if (empty($surveys[$page])) return $this->redirectToRoute('survey_sended');
 
         $survey = $surveys[$page];
-
         $form = $this->createForm(AnswerType::class, null, ['survey' => $survey]);
         $form->handleRequest($request);
 
@@ -123,7 +117,14 @@ class SurveyController extends AbstractController
         return $this->render('survey/error.html.twig');
     }
 
-    // Traitement du formulaire des réponses
+    #[Route('/survey-email-return',name: 'survey_email_return')]
+    public function emailReturn(Request $request): RedirectResponse
+    {
+        $request->getSession()->remove('session_id');
+        return $this->redirectToRoute('survey_index');
+    }
+
+    /** * Traitement du formulaire des réponses */
     private function answer($page, Survey $survey, $form, $session, $request): RedirectResponse
     {
         $answers = $request->getSession()->get('answers', []);
@@ -139,12 +140,33 @@ class SurveyController extends AbstractController
 
             if (!$response) return $this->redirectToRoute('survey_question', ['page' => $page]);
 
+            // TODO :: Si on a déjà répondu à la question, on met a jour la réponse au lieu d'ajouter une autre réponse
+            // TODO :: inversion des questions ??? cascade dans question survey et answer question
+
+//            $existingAnswer = null;
+//            foreach ($answers as $row) {
+//                if($row->getQuestion()->getId() === $question->getId()) {
+//                    $existingAnswer = $row;
+//                    break;
+//                }
+//            }
+//
+//            if ($existingAnswer) {
+//                $existingAnswer->setResponse($response);
+//            } else {
+//                $answer = new Answer();
+//                $answer->setResponse($response);
+//                $answer->setSessionId($this->autoSessionId($session));
+//
+//                $this->em->persist($answer);
+//                $answers[] = $answer;
+//            }
+
             $answer = new Answer();
             $answer->setResponse($response);
             $answer->setSessionId($this->autoSessionId($session));
 
             $this->em->persist($answer);
-
             $answers[] = $answer;
         }
 

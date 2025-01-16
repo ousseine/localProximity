@@ -23,6 +23,5 @@ class AnswerRepository extends ServiceEntityRepository
             ->setParameter('sessionId', $sessionId)
             ->getQuery()
             ->getResult();
-
     }
 }

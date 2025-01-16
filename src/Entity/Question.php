@@ -36,10 +36,11 @@ class Question
     /**
      * @var Collection<int, Answer>
      */
-    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'question', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'question', cascade: ['persist'], orphanRemoval: false)]
     private Collection $answers;
 
     #[ORM\ManyToOne(inversedBy: 'questions')]
+//    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'questions')]
     private ?Survey $survey = null;
 
     #[ORM\Column(length: 255, nullable: true)]

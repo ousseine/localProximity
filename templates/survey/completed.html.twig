@@ -21,8 +21,9 @@
             {{ form_errors(form) }}
             {{ form_start(form) }}
             {{ form_row(form.email) }}
-            <div class="flex items-center justify-center">
+            <div class="flex items-center justify-center gap-x-3">
                 <button type="submit" class="btn btn-primary">Envoyer</button>
+                <a href="{{ path('survey_email_return') }}" class="btn btn-outline-accent">Ignorer</a>
             </div>
             {{ form_end(form) }}
         </div>

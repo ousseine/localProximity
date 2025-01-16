@@ -14,6 +14,7 @@ class Answer
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'answers')]
+//    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'answers')]
     private ?Question $question = null;
 
     #[ORM\Column(type: 'string')]
