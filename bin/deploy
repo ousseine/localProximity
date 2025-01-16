@@ -1,2 +1,0 @@
-#!/bin/sh
-rsync -av -e "ssh -p 65002" --include=public/assets --include=.env --exclude-from=.gitignore --exclude=public/.htaccess --exclude=".*" ./ u351953825@154.49.245.241:~/domains/ousseine.site/public_html/localProximity.site
